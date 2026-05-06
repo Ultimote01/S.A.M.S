@@ -17,12 +17,12 @@ return(
             <form className="mt-2">
                 <div className="flex flex-col">
                   <div className="flex flex-col mt-[1.5rem]">
-                    <label htmlFor="email" className="text-[1rem] dark:text-white">Email</label>
+                    <label htmlFor="email" className="font-semibold text-[1rem] dark:text-white">Email</label>
                     <input className="py-2 pl-2 border-[2.8px] border-solid  border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-white dark:border-gray-600 dark:text-zinc-600"
                      type="text" name="email" placeholder="jhondoe@example.com" />
                   </div>
                   <div className="flex flex-col mt-[1.5rem]">
-                      <label htmlFor="password" className="text-[1rem] dark:text-white">Password</label>
+                      <label htmlFor="password" className=" font-semibold text-[1rem] dark:text-white">Password</label>
                       <input  className="py-2 pl-2 border-[2.8px] border-solid  border-zinc-200 mt-[0.4rem]  mt-[0.4rem] rounded-[5px] dark:bg-white dark:border-gray-600 dark:text-zinc-600" 
                       type="text" name="password"  placeholder="********"  />
                   </div>
