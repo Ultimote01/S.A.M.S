@@ -5,10 +5,11 @@
   --text: #6b6375;
   --text-h: #08060d;
   --bg: #fff;
+  --form-bg: #fafaf9;
   --border: #e5e4e7;
   --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
+  --accent: #fdfdfd;
+  --accent-bg: rgb(250, 159, 61);
   --accent-border: rgba(170, 59, 255, 0.5);
   --social-bg: rgba(244, 243, 236, 0.5);
   --shadow:
@@ -39,14 +40,15 @@
     --text: #9ca3af;
     --text-h: #f3f4f6;
     --bg: #16171d;
+    --form-bg: #1f1f25;
     --border: #2e303a;
     --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
+    --accent: #fdfdfd;
+    --accent-bg: rgb(250, 159, 61);
     --accent-border: rgba(192, 132, 252, 0.5);
     --social-bg: rgba(47, 48, 58, 0.5);
     --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+      rgba(255, 255, 255, 0.4) 0 4px 4px -3px, rgba(255, 255, 255, 0.25) 0 4px 2px -2px;
   }
 
   #social .button-icon {
@@ -60,7 +62,6 @@ body {
 
 #root {
   margin: 0 auto;
-  text-align: center;
   min-height: 100svh;
   display: flex;
   flex-direction: column;

@@ -7,7 +7,7 @@ import { Divider } from '../components/divider';
 import { Heading, Subheading } from '../components/heading';
 import { getAttendance } from '../data/data';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/table';
-import { createStringTitle } from '../util/helperFn';
+import { createStringTitle } from '../utils/helperFn';
 import api from '../api/api';
 
 
