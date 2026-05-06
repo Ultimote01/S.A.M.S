@@ -3,8 +3,8 @@ export default function LoginLayout(){
 return(
   <section className="h-[100%] flex flex-col justify-between gap-y-16">
     <div className="flex flex-col ">
-        <div className="mt-16 flex flex-col justify-center items-center px-3">
-        <div className="flex bg-[var(--form-bg)] flex-col px-8 py-14 w-[100%] rounded-xl max-w-[30rem] border-[0.4px] border-solid border-zinc-200 dark:border-[0px] lg:px-16"
+        <div className="mt-16 flex flex-col justify-center items-center px-3.5">
+        <div className="flex bg-[var(--form-bg)] flex-col px-4 py-14 w-[100%] rounded-xl max-w-[30rem] border-[0.4px] border-solid border-zinc-200 dark:border-[0px] lg:px-16"
         style={{boxShadow: `var(--shadow)`}}
         >
             <div className="flex flex-col justify-center items-center">
@@ -12,7 +12,7 @@ return(
               <h1 className="mb-4 mt-2 dark:text-white">S.A.M.S</h1>
             </div>
             <div className="px-6"> 
-            <hr className="dark:bg-white" />
+            <hr className="dark:bg-white" /> 
             </div>
             <form className="mt-2">
                 <div className="flex flex-col">
