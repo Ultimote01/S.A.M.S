@@ -1,12 +1,12 @@
 export default function LoginLayout(){
  
 return(
-  <section className="">
-    <div className="flex flex-col">
-        <div className="pb-[4rem] flex justify-start">
+  <section className="h-[100%] flex flex-col justify-between">
+    <div className="flex flex-col ">
+        <div className="pb-[6rem] flex justify-start">
         </div>
-        <div className="flex flex-col justify-center items-center px-2">
-        <div className="flex bg-[var(--form-bg)] flex-col px-6 py-14 w-[100%] rounded-xl max-w-[30rem] border-[0.4px] border-solid border-zinc-200 dark:border-[0px] lg:px-16"
+        <div className="flex flex-col justify-center items-center px-3">
+        <div className="flex bg-[var(--form-bg)] flex-col px-8 py-14 w-[100%] rounded-xl max-w-[30rem] border-[0.4px] border-solid border-zinc-200 dark:border-[0px] lg:px-16"
         style={{boxShadow: `var(--shadow)`}}
         >
             <div className="flex flex-col justify-center items-center">
@@ -30,7 +30,7 @@ return(
                   </div>
 
                   <div className="flex mt-12 lg:justify-center">
-                      <button className=" w-[100%] py-2 bg-[var(--accent-bg)] text-[var(--accent)] rounded-md lg:px-10 lg:w-[inherit] ">Login</button>
+                      <button className=" w-[100%] py-3 bg-[var(--accent-bg)] text-[var(--accent)] rounded-md lg:px-10 lg:w-[inherit] ">Login</button>
                   </div>
                    
                 </div>
@@ -39,9 +39,13 @@ return(
         </div>
     </div>
    
-    <div className="flex flex-col-reverse">
-          <div className="  flex justify-end ">
-            <div className={`pl-[3rem] pt-[6rem]`}></div> 
+    <div className="text-balck mt-2    text-[1rem] leading-[1.5rem] dark:text-white lg:mt-12">
+          <div className="  flex justify-center text-center py-4 mx-4  md:mx-16">
+          <span className=" flex gap-x-1.5 md:gap-x-4"> &copy; 2026 Yabatech. All rights reserved<i></i>
+          <a href="/login">Terms of use</a>
+          <i></i>
+          <a href="/login">Privacy Policy</a>
+          </span>
           </div>
     </div>
   </section>

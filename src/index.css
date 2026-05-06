@@ -20,6 +20,7 @@
   --mono: ui-monospace, Consolas, monospace;
 
   font: 18px/145% var(--sans);
+  scroll-behavior: smooth;
   letter-spacing: 0.18px;
   color-scheme: light dark;
   color: var(--text);
@@ -56,14 +57,15 @@
   }
 }
 
+
 body {
   margin: 0;
 }
 
 #root {
   margin: 0 auto;
-  min-height: 100svh;
   display: flex;
+  height: 100svh;
   flex-direction: column;
   box-sizing: border-box;
 }
