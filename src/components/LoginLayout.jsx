@@ -14,7 +14,7 @@ return(
             <div className="px-6"> 
             <hr className="dark:bg-white" /> 
             </div>
-            <form className="mt-2">
+            <form className="mt-8">
                 <div className="flex flex-col">
                   <div className="flex flex-col mt-[1.5rem]">
                     <label htmlFor="email" className="font-semibold text-[1rem] dark:text-white">Email</label>
