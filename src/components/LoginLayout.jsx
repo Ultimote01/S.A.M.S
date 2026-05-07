@@ -5,7 +5,7 @@ return(
     <div className="flex flex-col ">
         <div className="mt-16 flex flex-col justify-center items-center px-3.5">
         <div className="flex bg-[var(--form-bg)] flex-col px-4 py-14 w-[100%] rounded-xl max-w-[30rem] border-[0.4px] border-solid border-zinc-200 dark:border-[0px] lg:px-16"
-        // style={{boxShadow: `var(--shadow)`}}
+     
         >
             <div className="flex flex-col justify-center items-center">
               <img className="h-[70px] w-[70px]" src="yabatech_logo.jpg"/>

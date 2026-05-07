@@ -65,7 +65,7 @@ body {
 #root {
   margin: 0 auto;
   display: flex;
-  height: 100svh;
+  min-height: 100svh;
   flex-direction: column;
   box-sizing: border-box;
 }
