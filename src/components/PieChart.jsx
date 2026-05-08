@@ -2,14 +2,14 @@ import { Pie, PieChart, Sector, Tooltip } from "recharts"
 
 
 function getData(arg){
-
+  const data = [
+  { name: "Group A", value: arg[0] * 100 },
+  { name: "Group B", value: arg[1] * 100 },
+]
+  return data;
 }
 // #region Sample data
-const data = [
-  { name: "Group A", value: 400 },
-  { name: "Group B", value: 300 },
-  { name: "Group C", value: 300 }
-]
+ 
 
 // #endregion
 const renderActiveShape = ({
@@ -87,8 +87,10 @@ const renderActiveShape = ({
 export default function CustomActiveShapePieChart({
   isAnimationActive = true,
   defaultIndex = undefined,
-  attendanceData= [0,0,0]
+  attendanceData= [0,0]
 }) {
+
+  console.log(getData(attendanceData), attendanceData)
   return (
     <PieChart
       style={{
@@ -107,7 +109,7 @@ export default function CustomActiveShapePieChart({
     >
       <Pie
         renderActiveShape={renderActiveShape}
-        data={data}
+        data={getData(attendanceData)}
         cx="50%"
         cy="50%"
         innerRadius="60%"

@@ -8,11 +8,12 @@ import { Divider } from '../components/divider';
 import { Heading, Subheading } from '../components/heading';
 import { getAttendance } from '../data/data';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/table';
-import { createStringTitle, getAveragePresentStudents, getTotalPresentStudents } from '../utils/helperFn';
+import { createStringTitle, getAttendeesByDate, getAveragePresentStudents, getTotalPresentStudents } from '../utils/helperFn';
 import api from '../api/api';
 import SimpleAreaChart from '../components/SimpleAreaChart';
 import CustomActiveShapePieChart from '../components/PieChart';
 import { ClockIcon } from '@heroicons/react/24/outline';
+import { StarIcon } from '@heroicons/react/24/outline';
 
 
 
@@ -62,6 +63,7 @@ export default  function Home() {
     const userObject = JSON.parse(localStorage.getItem("user"));
     const [notifications, setNotifications] = useState(userObject?.user?.notifications);
     const [isLoading, setIsLoading] = useState(false);
+    const [attendancePerDay, setAttendancePerDay] = useState(null);
      
     //  Total Attendees
     // Student that Attended all the classes
@@ -69,7 +71,7 @@ export default  function Home() {
       
     useEffect(()=>{
         Promise.resolve(getAttendance())
-        .then((data)=> setData(data));
+        .then((data)=>{ setData(data);  setAttendancePerDay(getAttendeesByDate(data, 0))});
     },[])
 
     if (!data[0]) return;
@@ -186,14 +188,41 @@ export default  function Home() {
                 <CheckCircleIcon className='size-4'/>
               <h4>Attendance Summary</h4>
               </div>
-              <select className='py-1 px-2 text-black rounded-[2px] text-[0.75em] font-semibold dark:text-white'>
-                <option selected>Today</option>
-                <option>Yesterday</option>
+              <select className='py-1 px-2 text-black rounded-[2px] text-[0.75em] font-semibold dark:text-white'
+              onChange={(e)=>{
+                 setAttendancePerDay(getAttendeesByDate(data, e.target.value));
+              }}>
+                <option value={0} selected>Today</option>
+                <option value={1}>Yesterday</option>
+                <option value={2}> 2 Days</option>
+                <option value={3}> 3 Days</option>
               </select>
             </div>
           <CustomActiveShapePieChart attendanceData={[
-            
+              attendancePerDay, 30 - attendancePerDay
           ]}/>
+          <div className='flex justify-between items-center px-6 pb-2 text-[0.7em]'>
+            <div>
+              <i className='px-2 mmin-h- mr-1 bg-[#008000]'></i>
+              <span>
+                Present(
+                  <span>
+                    {Math.round((attendancePerDay / 30 ) * 100)}%
+                  </span>)
+              </span>
+            </div>
+            <div>
+              <i className='px-2 mmin-h- mr-1 bg-zinc-400'></i>
+               <span>
+                Absent(
+                  <span>
+                    {Math.round(((30 - attendancePerDay) / 30 ) * 100)}%
+                  </span>
+                  )
+
+               </span>
+            </div>
+          </div>
           </div>
       </div>
        
@@ -233,8 +262,10 @@ export default  function Home() {
                 {new Date(attendance.endTime).toLocaleTimeString()}
                 </TableCell>
               <TableCell className="text-center">
-                {getRandomNumber(1,5)}
-                </TableCell>
+                <div className='flex justify-end'> 
+                {Array.from({length:getRandomNumber(1,5)}).map((el, index)=><StarIcon key={index} className='size-4'/>)}
+                </div>
+               </TableCell>
             </TableRow>
           ))}
         </TableBody>

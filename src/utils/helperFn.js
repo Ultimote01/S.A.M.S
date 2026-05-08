@@ -43,3 +43,21 @@ export function getAveragePresentStudents(students, attendanceListSize) {
 
  return average;
 }
+
+
+export function getAttendeesByDate(data, date){
+     let totalAttendeesPerDay = 0 ;
+
+     data.forEach((attendance)=> {
+        
+       if (attendance.createdAt === new Date(Date.now()-(date * 24 * 60 * 60 * 1000 )).toLocaleDateString()){
+        console.log(attendance.course)
+        totalAttendeesPerDay+=attendance.students.length;
+       }
+        
+         
+     })
+
+     return totalAttendeesPerDay;
+  
+}
