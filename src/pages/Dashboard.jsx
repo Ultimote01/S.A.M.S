@@ -235,7 +235,7 @@ export default  function Home() {
             <TableHeader className={"font-medium text-black dark:text-white"}>Lecturer</TableHeader>
             <TableHeader className={"font-medium text-black dark:text-white"}>Start Time</TableHeader>
              <TableHeader className={"font-medium text-black dark:text-white"}>End time</TableHeader>
-            <TableHeader className="text-right font-medium text-black dark:text-white">Rating</TableHeader>
+            <TableHeader className="text-right font-medium text-black dark:text-white">Ratings</TableHeader>
 
           </TableRow>
         </TableHead>

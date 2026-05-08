@@ -241,7 +241,7 @@ export function ApplicationLayout({ children }) {
 
           <SidebarBody>
             <SidebarSection>
-              <SidebarItem to="/" >
+              <SidebarItem to="/dashboard" >
                <RectangleGroupIcon/>
                 <SidebarLabel>Dashboard</SidebarLabel>
               </SidebarItem>
