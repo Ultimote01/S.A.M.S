@@ -201,7 +201,7 @@ export default  function Home() {
           <CustomActiveShapePieChart attendanceData={[
               attendancePerDay, 30 - attendancePerDay
           ]}/>
-          <div className='flex justify-between items-center px-6 pb-2 text-[0.7em]'>
+          <div className='flex justify-between items-center px-6 pb-4 text-[0.7em]'>
             <div>
               <i className='px-2  mr-1 bg-[#008000]'></i>
               <span>
