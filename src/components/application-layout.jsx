@@ -23,9 +23,9 @@ import {
 import { SidebarLayout } from './sidebar-layout'
 
 import {
+  AcademicCapIcon,
   ArrowRightStartOnRectangleIcon,
   ChevronDownIcon,
-  // ChevronUpIcon,
   Cog8ToothIcon,
   LightBulbIcon,
   PlusIcon,
@@ -34,11 +34,10 @@ import {
 } from '@heroicons/react/16/solid'
 import {
   Cog6ToothIcon,
-  HomeIcon,
   QuestionMarkCircleIcon,
-  SparklesIcon,
-  ArrowPathIcon,
-  LockClosedIcon
+  RectangleGroupIcon,
+  LifebuoyIcon,
+  ChatBubbleLeftIcon
 } from '@heroicons/react/20/solid'
 import { useLocation, useNavigate } from "react-router-dom";
 import clsx from 'clsx'
@@ -48,6 +47,7 @@ import {  useState } from 'react'
 import Logo from './Logo'
 // import { createStringTitle } from '../util/helperFn'
 import api from "../api/api";
+
  
 
 
@@ -126,7 +126,7 @@ export function ApplicationLayout({ children }) {
   const navigate = useNavigate(); 
   const location = useLocation();
 
-  console.log();
+
 
 
 
@@ -231,12 +231,9 @@ export function ApplicationLayout({ children }) {
                   <Cog8ToothIcon />
                   <DropdownLabel>Settings</DropdownLabel>
                 </DropdownItem>
-                <DropdownDivider />
-               
-                <DropdownDivider />
                 <DropdownItem href="#">
                   <PlusIcon />
-                  <DropdownLabel>Add Log&hellip;</DropdownLabel>
+                  <DropdownLabel>Add Event&hellip;</DropdownLabel>
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -245,18 +242,18 @@ export function ApplicationLayout({ children }) {
           <SidebarBody>
             <SidebarSection>
               <SidebarItem to="/" >
-                <HomeIcon />
-                <SidebarLabel>Home</SidebarLabel>
+               <RectangleGroupIcon/>
+                <SidebarLabel>Dashboard</SidebarLabel>
               </SidebarItem>
               <SidebarItem to="/" >
-                <ArrowPathIcon  className='stroke-[#71717a]  dark:stroke-[#a1a1aa]' />
-                <SidebarLabel>History</SidebarLabel>
+                <AcademicCapIcon/>
+                <SidebarLabel>Lectures</SidebarLabel>
               </SidebarItem>
-              <SidebarItem to="/authentication" >
-                <LockClosedIcon />
-                <SidebarLabel>Authentication</SidebarLabel>
+              <SidebarItem to="/" >
+                <LifebuoyIcon/>
+                <SidebarLabel>Live Class</SidebarLabel>
               </SidebarItem>
-              <SidebarItem  >
+              <SidebarItem  to="/">
                 <Cog6ToothIcon />
                 <SidebarLabel>Settings</SidebarLabel>
               </SidebarItem>
@@ -271,10 +268,16 @@ export function ApplicationLayout({ children }) {
                 <SidebarLabel>Support</SidebarLabel>
               </SidebarItem>
               <SidebarItem href="#">
-                <SparklesIcon />
-                <SidebarLabel>Changelog</SidebarLabel>
+                <ChatBubbleLeftIcon/>
+                <SidebarLabel>Feedback</SidebarLabel>
               </SidebarItem>
             </SidebarSection>
+            <div className="mt-6">
+              <div className={"bg-[var(--accent-bg)] ml-2 px-4 py-1 rounded-[3.5px] tracking-[0.2em]\
+              max-w-[5rem] text-white text-[0.9rem]"}>
+                V1.0.1
+              </div>
+            </div>
           </SidebarBody>
           
         </Sidebar>

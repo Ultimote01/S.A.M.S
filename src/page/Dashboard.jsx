@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ArrowUpRightIcon, UserGroupIcon } from '@heroicons/react/16/solid';
-import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon, ExclamationCircleIcon, MinusCircleIcon } from '@heroicons/react/24/outline';
 
 import DashboardLayout from '../components/DashboardLayout';
 import { Badge } from '../components/badge';
@@ -8,10 +8,12 @@ import { Divider } from '../components/divider';
 import { Heading, Subheading } from '../components/heading';
 import { getAttendance } from '../data/data';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/table';
-import { createStringTitle } from '../utils/helperFn';
+import { createStringTitle, getAveragePresentStudents, getTotalPresentStudents } from '../utils/helperFn';
 import api from '../api/api';
 import SimpleAreaChart from '../components/SimpleAreaChart';
 import CustomActiveShapePieChart from '../components/PieChart';
+import { ClockIcon } from '@heroicons/react/24/outline';
+
 
 
 
@@ -71,10 +73,11 @@ export default  function Home() {
     },[])
 
     if (!data[0]) return;
-
-   data.toReversed().forEach((attendance)=>{ 
-      console.log(new Date(attendance.createdAt))
-   })
+   
+    const data1 = data.flatMap((attendance)=> attendance.students)
+    
+     
+    
     
     async function handleNAction(route) {
        setIsLoading(true);
@@ -118,20 +121,20 @@ export default  function Home() {
       }
 
       <Heading>
-      <span> Hello , {createStringTitle("kemi")}</span> 
+      <span> Hello , {createStringTitle("Micheal")}</span> 
      </Heading>
 
       <div className="mt-8 flex gap-x-2 justify-between">
         <div className={"w-[33%] shadow-sm border-[1.9px] text-black border-solid py-3 px-3  border-[#C0C0C0]  rounded-[4.5px] dark:text-white"}> 
           <div className='flex mb-3 justify-between text-[0.6rem] leading-[1.2em] md:items-center'>
            <div className='flex flex-col  md:flex-row md:items-center '> 
-            <UserGroupIcon className='size-4'/>
+            <UserGroupIcon className='size-4 md:mr-1.5'/>
             <h6>Total Attendees</h6>
             </div>
               <ExclamationCircleIcon className='size-3.5'/>
             </div>
           <div >
-            <h4 className='text-[0.9rem] font-bold'>180</h4>
+            <h4 className='text-[0.9rem] font-bold'>{data.length}</h4>
             <div className='flex items-center'>
               <ArrowUpRightIcon className='size-2'/>
                <p className=' ml-0.5 text-[0.55rem] leading-[0.7rem]'> 
@@ -142,13 +145,13 @@ export default  function Home() {
            <div className={"w-[33%] shadow-sm border-[1.9px] text-black border-solid py-3 px-3  border-[#C0C0C0]  rounded-[4.5px] dark:text-white"}> 
           <div className='flex mb-3 justify-between text-[0.6rem] leading-[1.2em] md:items-center'>
            <div className='flex flex-col  md:flex-row md:items-center '> 
-            <UserGroupIcon className='size-4'/>
-            <h6>Total Attendees</h6>
+            <ClockIcon className='size-4 md:mr-1.5'/>
+            <h6>Attended all classes</h6>
             </div>
               <ExclamationCircleIcon className='size-3.5'/>
             </div>
           <div >
-            <h4 className='text-[0.9rem] font-bold'>180</h4>
+            <h4 className='text-[0.9rem] font-bold'>{ getTotalPresentStudents(data1, data.length)}</h4>
             <div className='flex items-center'>
               <ArrowUpRightIcon className='size-2'/>
                <p className=' ml-0.5 text-[0.55rem] leading-[0.7rem]'> 
@@ -159,13 +162,13 @@ export default  function Home() {
           <div className={"w-[33%] shadow-sm border-[1.9px] text-black border-solid py-3 px-3  border-[#C0C0C0]  rounded-[4.5px] dark:text-white"}> 
           <div className='flex mb-3 justify-between text-[0.6rem] leading-[1.2em] md:items-center'>
            <div className='flex flex-col  md:flex-row md:items-center '> 
-            <UserGroupIcon className='size-4'/>
-            <h6>Total Attendees</h6>
+            <MinusCircleIcon className='size-4 md:mr-1.5'/>
+            <h6>Above average</h6>
             </div>
               <ExclamationCircleIcon style={{transform: "skew(180deg)"}} className='size-3.5'/>
             </div> 
           <div >
-            <h4 className='text-[0.9rem] font-bold'>180</h4>
+            <h4 className='text-[0.9rem] font-bold'>{getAveragePresentStudents(data1, data.length)}</h4>
             <div className='flex items-center'>
               <ArrowUpRightIcon className='size-2'/>
                <p className=' ml-0.6 text-[0.55rem] leading-[0.7rem]'> 
@@ -177,8 +180,20 @@ export default  function Home() {
 
       <div className="mt-8 flex  flex-col items-center gap-x-4 gap-y-8  justify-between md:flex-row" >
           <SimpleAreaChart/>
-          <div className={"w-[100%] shadow-sm border-[2px] max-w-[424px] text-black border-solid border-[#C0C0C0] rounded-[4.5px] md:w-[70%] dark:text-white"}> 
-          <CustomActiveShapePieChart/>
+          <div className={"w-[100%] shadow-sm border-[2px] max-w-[424px] text-black border-solid border-[#C0C0C0] rounded-[4.5px] md:w-[60%] dark:text-white"}> 
+            <div className='flex mt-2 px-2 justify-between items-center'>
+              <div className='flex items-center text-[0.82em] text-black font-bold dark:text-white'> 
+                <CheckCircleIcon className='size-4'/>
+              <h4>Attendance Summary</h4>
+              </div>
+              <select className='py-1 px-2 text-black rounded-[2px] text-[0.75em] font-semibold dark:text-white'>
+                <option selected>Today</option>
+                <option>Yesterday</option>
+              </select>
+            </div>
+          <CustomActiveShapePieChart attendanceData={[
+            
+          ]}/>
           </div>
       </div>
        
@@ -198,7 +213,7 @@ export default  function Home() {
         <TableBody>
           {data && data.toReversed().map((attendance,index) => (
             <TableRow key={index}   
-            title={`attendance #${new Date(attendance.startTime).toLocaleString()}`}
+            title={`attendance #${new Date(attendance.startTime).toLocaleDateString()}`}
             >
               <TableCell>
                 {new Date(attendance.startTime).toLocaleDateString()}
