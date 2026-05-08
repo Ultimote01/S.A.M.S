@@ -1,4 +1,4 @@
-'use client'
+
 
 import * as Headless from '@headlessui/react'
 import clsx from 'clsx'
@@ -47,11 +47,11 @@ export function DropdownItem({ className,  focusValue, ...props }) {
   let classes = clsx(
     className,
     // Base styles
-    'group cursor-default rounded-lg px-3.5 py-2.5 focus:outline-none sm:px-3 sm:py-1.5',
+    'group cursor-default rounded-lg  px-3.5 py-2.5 focus:outline-none sm:px-3 sm:py-1.5',
     // Text styles
     'text-left text-base/6 text-zinc-950 sm:text-sm/6 dark:text-white forced-colors:text-[CanvasText]',
     // Focus
-    `data-[focus]:${focusValue?? 'bg-purple-500'} data-[focus]:text-white`,
+    `data-[focus]:${focusValue?? 'bg-[var(--accent-bg)]'} data-[focus]:text-white`,
     // Disabled state
     'data-[disabled]:opacity-50',
     // Forced colors mode

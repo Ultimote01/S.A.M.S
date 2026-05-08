@@ -121,10 +121,12 @@ export function AccountDropdownMenu({ anchor , handleSignOut,route}) {
   )
 }
  
-export function ApplicationLayout({ user, children }) {
+export function ApplicationLayout({ children }) {
   const [notifications, setNotifications] = useState([{eamil: ""}]);
   const navigate = useNavigate(); 
   const location = useLocation();
+
+  console.log();
 
 
 
@@ -133,6 +135,7 @@ export function ApplicationLayout({ user, children }) {
      try{
         const signOutUpdate= localStorage.getItem("signOutUpdate");
         if (signOutUpdate !== null && signOutUpdate !== undefined) {
+          /*eslint-disable-next-line */
            const res = await api.post("auth/logout",  JSON.parse(signOutUpdate));
            
            localStorage.removeItem("signOutUpdate");
@@ -246,7 +249,7 @@ export function ApplicationLayout({ user, children }) {
                 <SidebarLabel>Home</SidebarLabel>
               </SidebarItem>
               <SidebarItem to="/" >
-                <ArrowPathIcon  className='stroke-[#71717a] dark:stroke-[#a1a1aa]' />
+                <ArrowPathIcon  className='stroke-[#71717a]  dark:stroke-[#a1a1aa]' />
                 <SidebarLabel>History</SidebarLabel>
               </SidebarItem>
               <SidebarItem to="/authentication" >
@@ -257,6 +260,7 @@ export function ApplicationLayout({ user, children }) {
                 <Cog6ToothIcon />
                 <SidebarLabel>Settings</SidebarLabel>
               </SidebarItem>
+
             </SidebarSection>
 
              

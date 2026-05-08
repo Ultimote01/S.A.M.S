@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
+import { ArrowUpRightIcon, UserGroupIcon } from '@heroicons/react/16/solid';
+import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 
 import DashboardLayout from '../components/DashboardLayout';
-// import { Avatar } from '../components/d-components/avatar';
 import { Badge } from '../components/badge';
 import { Divider } from '../components/divider';
 import { Heading, Subheading } from '../components/heading';
@@ -9,6 +10,9 @@ import { getAttendance } from '../data/data';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/table';
 import { createStringTitle } from '../utils/helperFn';
 import api from '../api/api';
+import SimpleAreaChart from '../components/SimpleAreaChart';
+import CustomActiveShapePieChart from '../components/PieChart';
+
 
 
 
@@ -43,6 +47,12 @@ function Arrowpath({className}) {
 
   )
 }
+
+  const getRandomNumber =(min, max)=>{
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor( Math.random() * (max - min + 1)) + min;
+  }
  
  
 export default  function Home() {
@@ -51,13 +61,20 @@ export default  function Home() {
     const [notifications, setNotifications] = useState(userObject?.user?.notifications);
     const [isLoading, setIsLoading] = useState(false);
      
+    //  Total Attendees
+    // Student that Attended all the classes
+    // Student that attended average 
       
+    useEffect(()=>{
+        Promise.resolve(getAttendance())
+        .then((data)=> setData(data));
+    },[])
 
-      useEffect(()=>{
-          Promise.resolve(getAttendance())
-          .then((data)=> setData(data));
-      },[])
+    if (!data[0]) return;
 
+   data.toReversed().forEach((attendance)=>{ 
+      console.log(new Date(attendance.createdAt))
+   })
     
     async function handleNAction(route) {
        setIsLoading(true);
@@ -87,12 +104,11 @@ export default  function Home() {
     setNotifications(ModifiedEl);
     
   }
-  
 
 
    
   return (
-    <DashboardLayout user={userObject?.user} >
+    <DashboardLayout user={userObject?.user} data={data} >
       { notifications?.map((notification, index)=> <div key={index} className='bg-[rgb(244,244,245,1)]   hidden gap-x-[2rem] w-[60%]   text-center py-[0.7rem] rounded-lg justify-center ml-[7rem] items-center mt-[-2rem] mb-[1rem] lg:ml-[15rem] lg:mt-[-1rem] lg:w-[50%] lg:flex dark:bg-zinc-800 dark:text-white' >
       {notification?.message}
       {notification?.action && <button  disabled={isLoading} className=" text-white text-[.82rem] bg-purple-500 px-[0.4rem] hover:cursor-pointer rounded-[6px] disabled:opacity-60 disabled:cursor-default" onClick={()=> handleNAction(notification?.action?.route)}>
@@ -101,41 +117,109 @@ export default  function Home() {
       <i  className="bg-[rgb(244,244,245,1)]  hover:cursor-pointer dark:bg-zinc-800" onClick={()=> handleNotifications(index)}><CloseButtonIcon /></i></div>)
       }
 
-      <Heading><span> Hello, {createStringTitle(userObject?.user?.firstName)}</span> <span style={{fontSize:"1rem"}}>Account No: {userObject?.user?.accountNumber}</span></Heading>
-      <div className="mt-8 flex items-end justify-between">
-        <Subheading>Savings Account <p>Balance #{userObject?.user?.balance}</p> </Subheading>
-         
+      <Heading>
+      <span> Hello , {createStringTitle("kemi")}</span> 
+     </Heading>
+
+      <div className="mt-8 flex gap-x-2 justify-between">
+        <div className={"w-[33%] shadow-sm border-[1.9px] text-black border-solid py-3 px-3  border-[#C0C0C0]  rounded-[4.5px] dark:text-white"}> 
+          <div className='flex mb-3 justify-between text-[0.6rem] leading-[1.2em] md:items-center'>
+           <div className='flex flex-col  md:flex-row md:items-center '> 
+            <UserGroupIcon className='size-4'/>
+            <h6>Total Attendees</h6>
+            </div>
+              <ExclamationCircleIcon className='size-3.5'/>
+            </div>
+          <div >
+            <h4 className='text-[0.9rem] font-bold'>180</h4>
+            <div className='flex items-center'>
+              <ArrowUpRightIcon className='size-2'/>
+               <p className=' ml-0.5 text-[0.55rem] leading-[0.7rem]'> 
+            <strong className='pr-1 text-[#008000] dark:text-[#32CD32]'>0.5%</strong>from this month</p>
+            </div>
+          </div>
+         </div>
+           <div className={"w-[33%] shadow-sm border-[1.9px] text-black border-solid py-3 px-3  border-[#C0C0C0]  rounded-[4.5px] dark:text-white"}> 
+          <div className='flex mb-3 justify-between text-[0.6rem] leading-[1.2em] md:items-center'>
+           <div className='flex flex-col  md:flex-row md:items-center '> 
+            <UserGroupIcon className='size-4'/>
+            <h6>Total Attendees</h6>
+            </div>
+              <ExclamationCircleIcon className='size-3.5'/>
+            </div>
+          <div >
+            <h4 className='text-[0.9rem] font-bold'>180</h4>
+            <div className='flex items-center'>
+              <ArrowUpRightIcon className='size-2'/>
+               <p className=' ml-0.5 text-[0.55rem] leading-[0.7rem]'> 
+            <strong className='pr-1 text-[#008000] dark:text-[#32CD32]'>0.5%</strong>from this month</p>
+            </div>
+          </div>
+         </div>
+          <div className={"w-[33%] shadow-sm border-[1.9px] text-black border-solid py-3 px-3  border-[#C0C0C0]  rounded-[4.5px] dark:text-white"}> 
+          <div className='flex mb-3 justify-between text-[0.6rem] leading-[1.2em] md:items-center'>
+           <div className='flex flex-col  md:flex-row md:items-center '> 
+            <UserGroupIcon className='size-4'/>
+            <h6>Total Attendees</h6>
+            </div>
+              <ExclamationCircleIcon style={{transform: "skew(180deg)"}} className='size-3.5'/>
+            </div> 
+          <div >
+            <h4 className='text-[0.9rem] font-bold'>180</h4>
+            <div className='flex items-center'>
+              <ArrowUpRightIcon className='size-2'/>
+               <p className=' ml-0.6 text-[0.55rem] leading-[0.7rem]'> 
+            <strong className='pr-1 text-[#008000] dark:text-[#32CD32]'>0.5%</strong>from this month</p>
+            </div>
+          </div>
+         </div>
+      </div>
+
+      <div className="mt-8 flex  flex-col items-center gap-x-4 gap-y-8  justify-between md:flex-row" >
+          <SimpleAreaChart/>
+          <div className={"w-[100%] shadow-sm border-[2px] max-w-[424px] text-black border-solid border-[#C0C0C0] rounded-[4.5px] md:w-[70%] dark:text-white"}> 
+          <CustomActiveShapePieChart/>
+          </div>
       </div>
        
-      <Subheading className="mt-14">Recent transaction</Subheading>
+      <Subheading className="mt-14">Recent Lectures</Subheading>
       <Table className="mt-4 [--gutter:theme(spacing.6)] lg:[--gutter:theme(spacing.10)]">
         <TableHead>
           <TableRow>
-            <TableHeader>Trans  Id</TableHeader>
-            <TableHeader>Time</TableHeader>
-            <TableHeader>Merchant</TableHeader>
-            <TableHeader>Logo</TableHeader>
-             <TableHeader>Transaction Type</TableHeader>
-            <TableHeader className="text-right">Amount</TableHeader>
+            <TableHeader className={"font-medium text-black dark:text-white"}>Date</TableHeader>
+            <TableHeader className={"font-medium text-black dark:text-white"}>Course</TableHeader>
+            <TableHeader className={"font-medium text-black dark:text-white"}>Lecturer</TableHeader>
+            <TableHeader className={"font-medium text-black dark:text-white"}>Start Time</TableHeader>
+             <TableHeader className={"font-medium text-black dark:text-white"}>End time</TableHeader>
+            <TableHeader className="text-right font-medium text-black dark:text-white">Rating</TableHeader>
 
           </TableRow>
         </TableHead>
         <TableBody>
-          {data && data.map((tran) => (
-            <TableRow key={tran.id} href={tran.url} title={`tran #${tran.id}`}>
-              <TableCell>{tran.id}</TableCell>
-              <TableCell className="text-zinc-500">{
-                `${new Date(tran.transactionDate).toUTCString().split(" ")[4]}
+          {data && data.toReversed().map((attendance,index) => (
+            <TableRow key={index}   
+            title={`attendance #${new Date(attendance.startTime).toLocaleString()}`}
+            >
+              <TableCell>
+                {new Date(attendance.startTime).toLocaleDateString()}
+              </TableCell>
+
+              <TableCell>{
+                `${attendance.course}
                 `
                 }</TableCell>
-              <TableCell>{tran.merchant}</TableCell>
               <TableCell>
-                <div className="flex items-center gap-2">
-                  <img style={{width:"1.9rem", height:"1.9rem", borderRadius: "8px"}} src={tran.merchantLogo}></img>
-                </div>
+                {attendance.lecturer}
+                </TableCell>
+              <TableCell>
+                 {new Date(attendance.startTime).toLocaleTimeString()}
               </TableCell>
-               <TableCell>{tran.transactionType}</TableCell>
-              <TableCell className="text-right">#{tran.amount}</TableCell>
+               <TableCell>
+                {new Date(attendance.endTime).toLocaleTimeString()}
+                </TableCell>
+              <TableCell className="text-center">
+                {getRandomNumber(1,5)}
+                </TableCell>
             </TableRow>
           ))}
         </TableBody>
