@@ -203,7 +203,7 @@ export default  function Home() {
           ]}/>
           <div className='flex justify-between items-center px-6 pb-2 text-[0.7em]'>
             <div>
-              <i className='px-2 mmin-h- mr-1 bg-[#008000]'></i>
+              <i className='px-2  mr-1 bg-[#008000]'></i>
               <span>
                 Present(
                   <span>
@@ -212,7 +212,7 @@ export default  function Home() {
               </span>
             </div>
             <div>
-              <i className='px-2 mmin-h- mr-1 bg-zinc-400'></i>
+              <i className='px-2  mr-1 bg-zinc-400'></i>
                <span>
                 Absent(
                   <span>

@@ -90,7 +90,7 @@ export default function CustomActiveShapePieChart({
   attendanceData= [0,0]
 }) {
 
-  console.log(getData(attendanceData), attendanceData)
+
   return (
     <PieChart
       style={{

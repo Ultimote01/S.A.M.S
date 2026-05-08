@@ -1,4 +1,15 @@
+import { useNavigate } from "react-router-dom";
+
 export default function LoginLayout(){
+  const navigate = useNavigate();
+
+function handleSubmit(e) {
+  e.preventDefault();
+  const email = document.getElementById("pex").value;
+  const password = document.getElementById("pez").value;
+
+  if (email && password) navigate("/dashboard", {replace: true})
+}
  
 return(
   <section className="h-[100%] flex flex-col justify-between gap-y-16">
@@ -14,16 +25,16 @@ return(
             <div className="px-6"> 
             <hr className="dark:bg-white" /> 
             </div>
-            <form className="mt-8">
+            <form className="mt-8" onSubmit={handleSubmit}>
                 <div className="flex flex-col">
                   <div className="flex flex-col mt-[1.5rem]">
                     <label htmlFor="email" className="font-semibold text-[1rem] dark:text-white">Email</label>
-                    <input className="py-2 pl-2 border-[2.8px] border-solid  border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600"
-                     type="text" name="email" placeholder="jhondoe@example.com" />
+                    <input id="pex" className="py-2 pl-2 border-[2.8px] border-solid  border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600"
+                     type="email" name="email" placeholder="jhondoe@example.com" />
                   </div>
                   <div className="flex flex-col mt-[1.5rem]">
                       <label htmlFor="password" className=" font-semibold text-[1rem] dark:text-white">Password</label>
-                      <input  className="py-2 pl-2 border-[2.8px] border-solid  border-zinc-200 mt-[0.4rem]  mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600" 
+                      <input id="pez" className="py-2 pl-2 border-[2.8px] border-solid  border-zinc-200 mt-[0.4rem]  mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600" 
                       type="text" name="password"  placeholder="********"  />
                   </div>
 

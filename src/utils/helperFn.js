@@ -51,7 +51,6 @@ export function getAttendeesByDate(data, date){
      data.forEach((attendance)=> {
         
        if (attendance.createdAt === new Date(Date.now()-(date * 24 * 60 * 60 * 1000 )).toLocaleDateString()){
-        console.log(attendance.course)
         totalAttendeesPerDay+=attendance.students.length;
        }
         
