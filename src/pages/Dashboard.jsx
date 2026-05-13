@@ -207,8 +207,8 @@ export default  function Home() {
               attendancePerDay.flatMap((students)=> students).length, 30 - attendancePerDay.flatMap((students)=> students).length
           ]}/>
           <div className='flex justify-between items-center px-6 pb-4 text-[0.7em]'>
-            <div>
-              <i className='px-2  mr-1 bg-[#008000]'></i>
+            <div className='flex items-center'>
+              <i className='px-1 h-[10px] block mr-1 bg-[#008000]'></i>
               <span>
                 Present(
                   <span>
@@ -216,8 +216,8 @@ export default  function Home() {
                   </span>)
               </span>
             </div>
-            <div>
-              <i className='px-2  mr-1 bg-zinc-400'></i>
+            <div className='flex items-center'>
+              <i className='px-1 h-[10px] block  mr-1 bg-zinc-400'></i>
                <span>
                 Absent(
                   <span>
