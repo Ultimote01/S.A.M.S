@@ -14,10 +14,11 @@ export function getTotalPresentStudents(students,attendanceListSize){
         attendanceMap.set(student, 
         attendanceMap.get(student) === undefined? 1 : attendanceMap.get(student)+1);
     });
-    
+   
 
- attendanceMap.forEach((value )=>{
-    if (value === attendanceListSize) total++;
+
+ attendanceMap.forEach((value)=>{
+    if (value === attendanceListSize ) total++;
  })
 
  attendanceMap.clear();
@@ -34,9 +35,11 @@ export function getAveragePresentStudents(students, attendanceListSize) {
     });
     
 
+if (attendanceListSize === 1) return average;
+
  attendanceMap.forEach((value )=>{
-    if (value >  Math.round( (45 / 100 ) * attendanceListSize) )
-        if (value < Math.round( (95 / 100 ) * attendanceListSize) ) average++;
+    if (value <  attendanceListSize && value >  0 )
+        average++;
  })
 
  attendanceMap.clear();
@@ -46,12 +49,12 @@ export function getAveragePresentStudents(students, attendanceListSize) {
 
 
 export function getAttendeesByDate(data, date){
-     let totalAttendeesPerDay = 0 ;
+     let totalAttendeesPerDay = [];
 
      data.forEach((attendance)=> {
         
        if (attendance.createdAt === new Date(Date.now()-(date * 24 * 60 * 60 * 1000 )).toLocaleDateString()){
-        totalAttendeesPerDay+=attendance.students.length;
+       totalAttendeesPerDay.push(attendance.students)
        }
         
          
@@ -60,3 +63,12 @@ export function getAttendeesByDate(data, date){
      return totalAttendeesPerDay;
   
 }
+
+
+
+
+export const getRandomNumber =(min, max)=>{
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor( Math.random() * (max - min + 1)) + min;
+  }

@@ -6,9 +6,14 @@ import DashboardLayout from '../components/DashboardLayout';
 import { Badge } from '../components/badge';
 import { Divider } from '../components/divider';
 import { Heading, Subheading } from '../components/heading';
-import { getAttendance } from '../data/data';
+import { getAllUsers, getAttendance } from '../data/data';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/table';
-import { createStringTitle, getAttendeesByDate, getAveragePresentStudents, getTotalPresentStudents } from '../utils/helperFn';
+import { createStringTitle, 
+  getAttendeesByDate, 
+  getAveragePresentStudents, 
+  getTotalPresentStudents,
+  getRandomNumber
+} from '../utils/helperFn';
 import api from '../api/api';
 import SimpleAreaChart from '../components/SimpleAreaChart';
 import CustomActiveShapePieChart from '../components/PieChart';
@@ -51,19 +56,16 @@ function Arrowpath({className}) {
   )
 }
 
-  const getRandomNumber =(min, max)=>{
-      min = Math.ceil(min);
-      max = Math.floor(max);
-      return Math.floor( Math.random() * (max - min + 1)) + min;
-  }
+ 
  
  
 export default  function Home() {
     const [data, setData] = useState([]);
-    const userObject = JSON.parse(localStorage.getItem("user"));
+    const [userObject, setUserObject] = useState({});
     const [notifications, setNotifications] = useState(userObject?.user?.notifications);
     const [isLoading, setIsLoading] = useState(false);
     const [attendancePerDay, setAttendancePerDay] = useState(null);
+    
      
     //  Total Attendees
     // Student that Attended all the classes
@@ -71,14 +73,13 @@ export default  function Home() {
       
     useEffect(()=>{
         Promise.resolve(getAttendance())
-        .then((data)=>{ setData(data);  setAttendancePerDay(getAttendeesByDate(data, 0))});
+        .then((data)=>{ setData(data); 
+         setUserObject(getAllUsers()[getRandomNumber(0, getAllUsers().length-1)])
+        setAttendancePerDay(getAttendeesByDate(data, 0))});
     },[])
 
     if (!data[0]) return;
-   
-    const data1 = data.flatMap((attendance)=> attendance.students)
-    
-     
+  
     
     
     async function handleNAction(route) {
@@ -123,11 +124,15 @@ export default  function Home() {
       }
 
       <Heading>
-      <span> Hello , {createStringTitle("Micheal")}</span> 
+      <span> Hello , {createStringTitle(userObject.fullName.split(" ")[0])}</span> 
      </Heading>
 
+     {userObject.role === "student" && <div className='pt-2'>
+      <span>Matric No:</span> <span>{userObject.id}</span>
+      </div>}
+
       <div className="mt-8 flex gap-x-2 justify-between">
-        <div className={"w-[33%] shadow-sm border-[1.9px] text-black border-solid py-3 px-3  border-[#C0C0C0]  rounded-[4.5px] dark:text-white"}> 
+        <div className={"w-[33%] shadow-sm border-[1.9px] text-black border-solid py-6 px-3 border-[#C0C0C0]  rounded-[4.5px] dark:text-white"}> 
           <div className='flex mb-3 justify-between text-[0.6rem] leading-[1.2em] md:items-center'>
            <div className='flex flex-col  md:flex-row md:items-center '> 
             <UserGroupIcon className='size-4 md:mr-1.5'/>
@@ -136,7 +141,7 @@ export default  function Home() {
               <ExclamationCircleIcon className='size-3.5'/>
             </div>
           <div >
-            <h4 className='text-[0.9rem] font-bold'>{data.length}</h4>
+            <h4 className='text-[0.9rem] font-bold'>{attendancePerDay.flatMap((students)=> students).length}</h4>
             <div className='flex items-center'>
               <ArrowUpRightIcon className='size-2'/>
                <p className=' ml-0.5 text-[0.55rem] leading-[0.7rem]'> 
@@ -144,7 +149,7 @@ export default  function Home() {
             </div>
           </div>
          </div>
-           <div className={"w-[33%] shadow-sm border-[1.9px] text-black border-solid py-3 px-3  border-[#C0C0C0]  rounded-[4.5px] dark:text-white"}> 
+           <div className={"w-[33%] shadow-sm border-[1.9px] text-black border-solid py-6 px-3  border-[#C0C0C0]  rounded-[4.5px] dark:text-white"}> 
           <div className='flex mb-3 justify-between text-[0.6rem] leading-[1.2em] md:items-center'>
            <div className='flex flex-col  md:flex-row md:items-center '> 
             <ClockIcon className='size-4 md:mr-1.5'/>
@@ -153,7 +158,7 @@ export default  function Home() {
               <ExclamationCircleIcon className='size-3.5'/>
             </div>
           <div >
-            <h4 className='text-[0.9rem] font-bold'>{ getTotalPresentStudents(data1, data.length)}</h4>
+            <h4 className='text-[0.9rem] font-bold'>{ getTotalPresentStudents(attendancePerDay.flatMap((students)=> students), attendancePerDay.length)}</h4>
             <div className='flex items-center'>
               <ArrowUpRightIcon className='size-2'/>
                <p className=' ml-0.5 text-[0.55rem] leading-[0.7rem]'> 
@@ -161,7 +166,7 @@ export default  function Home() {
             </div>
           </div>
          </div>
-          <div className={"w-[33%] shadow-sm border-[1.9px] text-black border-solid py-3 px-3  border-[#C0C0C0]  rounded-[4.5px] dark:text-white"}> 
+          <div className={"w-[33%] shadow-sm border-[1.9px] text-black border-solid py-6 px-3  border-[#C0C0C0]  rounded-[4.5px] dark:text-white"}> 
           <div className='flex mb-3 justify-between text-[0.6rem] leading-[1.2em] md:items-center'>
            <div className='flex flex-col  md:flex-row md:items-center '> 
             <MinusCircleIcon className='size-4 md:mr-1.5'/>
@@ -170,7 +175,7 @@ export default  function Home() {
               <ExclamationCircleIcon style={{transform: "skew(180deg)"}} className='size-3.5'/>
             </div> 
           <div >
-            <h4 className='text-[0.9rem] font-bold'>{getAveragePresentStudents(data1, data.length)}</h4>
+            <h4 className='text-[0.9rem] font-bold'>{getAveragePresentStudents(attendancePerDay.flatMap((students)=> students), attendancePerDay.length)}</h4>
             <div className='flex items-center'>
               <ArrowUpRightIcon className='size-2'/>
                <p className=' ml-0.6 text-[0.55rem] leading-[0.7rem]'> 
@@ -199,7 +204,7 @@ export default  function Home() {
               </select>
             </div>
           <CustomActiveShapePieChart attendanceData={[
-              attendancePerDay, 30 - attendancePerDay
+              attendancePerDay.flatMap((students)=> students).length, 30 - attendancePerDay.flatMap((students)=> students).length
           ]}/>
           <div className='flex justify-between items-center px-6 pb-4 text-[0.7em]'>
             <div>
@@ -207,7 +212,7 @@ export default  function Home() {
               <span>
                 Present(
                   <span>
-                    {Math.round((attendancePerDay / 30 ) * 100)}%
+                    {Math.round((attendancePerDay.flatMap((students)=> students).length / 30 ) * 100)}%
                   </span>)
               </span>
             </div>
@@ -216,7 +221,7 @@ export default  function Home() {
                <span>
                 Absent(
                   <span>
-                    {Math.round(((30 - attendancePerDay) / 30 ) * 100)}%
+                    {Math.round(((30 - attendancePerDay.flatMap((students)=> students).length) / 30 ) * 100)}%
                   </span>
                   )
 
@@ -234,6 +239,9 @@ export default  function Home() {
             <TableHeader className={"font-medium text-black dark:text-white"}>Course</TableHeader>
             <TableHeader className={"font-medium text-black dark:text-white"}>Lecturer</TableHeader>
             <TableHeader className={"font-medium text-black dark:text-white"}>Start Time</TableHeader>
+             { userObject.role === "student" && <TableHeader className={"font-medium text-black dark:text-white"}>
+                  Appearance
+              </TableHeader>}
              <TableHeader className={"font-medium text-black dark:text-white"}>End time</TableHeader>
             <TableHeader className="text-right font-medium text-black dark:text-white">Ratings</TableHeader>
 
@@ -258,6 +266,16 @@ export default  function Home() {
               <TableCell>
                  {new Date(attendance.startTime).toLocaleTimeString()}
               </TableCell>
+              {userObject.role === "student" &&  <TableCell>
+                  {
+                    (
+                    ()=>{
+                      const present = attendance.students.some((student)=> student === userObject.id);
+                      return present? <strong>Present</strong>: <strong>Absent</strong>;
+                    }
+                  )()
+                  }
+                </TableCell>}
                <TableCell>
                 {new Date(attendance.endTime).toLocaleTimeString()}
                 </TableCell>
