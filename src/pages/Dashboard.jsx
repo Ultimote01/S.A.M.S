@@ -140,6 +140,10 @@ export default  function Home() {
       <span>Matric No:</span> <span>{userObject.id}</span>
       </div>}
 
+      {userObject.role === "lecturer" && <div className='pt-2'>
+      <span>Lecturer Profile Code:</span> <span>{userObject.id}</span>
+      </div>}
+
       <div className="mt-8 flex gap-x-2 justify-between">
         <div className={"w-[33%] shadow-sm border-[1.9px] text-black border-solid py-6 px-3 border-[#C0C0C0]  rounded-[4.5px] dark:text-white"}> 
           <div className='flex mb-3 justify-between text-[0.6rem] leading-[1.2em] md:items-center'>
