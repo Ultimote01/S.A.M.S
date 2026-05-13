@@ -137,7 +137,7 @@ export default  function Home() {
      </Heading>
 
      {userObject.role === "student" && <div className='pt-2'>
-      <span>Matric No:</span> <span>{userObject.id}</span>
+      <span>Matriculation No:</span> <span>{userObject.id}</span>
       </div>}
 
       {userObject.role === "lecturer" && <div className='pt-2'>
