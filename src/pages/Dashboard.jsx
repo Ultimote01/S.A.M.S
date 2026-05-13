@@ -65,20 +65,29 @@ export default  function Home() {
     const [notifications, setNotifications] = useState(userObject?.user?.notifications);
     const [isLoading, setIsLoading] = useState(false);
     const [attendancePerDay, setAttendancePerDay] = useState(null);
+
     
      
     //  Total Attendees
     // Student that Attended all the classes
     // Student that attended average 
+
       
     useEffect(()=>{
         Promise.resolve(getAttendance())
         .then((data)=>{ setData(data); 
-         setUserObject(getAllUsers()[getRandomNumber(0, getAllUsers().length-1)])
+        setUserObject(getAllUsers()[getRandomNumber(0, getAllUsers().length-1)])
         setAttendancePerDay(getAttendeesByDate(data, 0))});
+       
     },[])
 
     if (!data[0]) return;
+
+    const presentStudents = attendancePerDay.flatMap((el)=>el).length;
+    const expectedStudents = getAllUsers().slice(8).length * attendancePerDay.length;
+    const presentPercentage = (presentStudents / expectedStudents) * 100;
+    const absentPercentage = ((expectedStudents - presentStudents)/expectedStudents) * 100;
+ 
   
     
     
@@ -204,7 +213,7 @@ export default  function Home() {
               </select>
             </div>
           <CustomActiveShapePieChart attendanceData={[
-              attendancePerDay.flatMap((students)=> students).length, 30 - attendancePerDay.flatMap((students)=> students).length
+              presentPercentage, absentPercentage
           ]}/>
           <div className='flex justify-between items-center px-6 pb-4 text-[0.7em]'>
             <div className='flex items-center'>
@@ -212,7 +221,7 @@ export default  function Home() {
               <span>
                 Present(
                   <span>
-                    {Math.round((attendancePerDay.flatMap((students)=> students).length / 30 ) * 100)}%
+                    {Math.round(presentPercentage)}%
                   </span>)
               </span>
             </div>
@@ -221,7 +230,7 @@ export default  function Home() {
                <span>
                 Absent(
                   <span>
-                    {Math.round(((30 - attendancePerDay.flatMap((students)=> students).length) / 30 ) * 100)}%
+                    {Math.floor(absentPercentage)}%
                   </span>
                   )
 

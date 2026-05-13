@@ -16,7 +16,7 @@ function getUserLecturer(){
 }
 
 function getUserStudents() {
-   const  userstudent = [...users].splice(8);
+   const  userstudent = [...users].slice(8);
     const studentExist = []; 
     const students = [];
     const size =  getRandomNumber(2, userstudent.length-1)
