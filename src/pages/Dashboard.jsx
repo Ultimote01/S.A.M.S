@@ -253,7 +253,7 @@ export default  function Home() {
             <TableHeader className={"font-medium text-black dark:text-white"}>Lecturer</TableHeader>
             <TableHeader className={"font-medium text-black dark:text-white"}>Start Time</TableHeader>
              { userObject.role === "student" && <TableHeader className={"font-medium text-black dark:text-white"}>
-                  Appearance
+                  Mode
               </TableHeader>}
              <TableHeader className={"font-medium text-black dark:text-white"}>End time</TableHeader>
             <TableHeader className="text-right font-medium text-black dark:text-white">Ratings</TableHeader>
@@ -281,12 +281,7 @@ export default  function Home() {
               </TableCell>
               {userObject.role === "student" &&  <TableCell>
                   {
-                    (
-                    ()=>{
-                      const present = attendance.students.some((student)=> student === userObject.id);
-                      return present? <strong>Present</strong>: <strong>Absent</strong>;
-                    }
-                  )()
+                   attendance.mode
                   }
                 </TableCell>}
                <TableCell>

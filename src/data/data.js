@@ -50,9 +50,17 @@ function createAttendance(){
 
             const courseExist = [];
             const todayLectures = [];
-            const coursePerday = getRandomNumber(2, 5)  
+            const coursePerday = getRandomNumber(2, 4)  
+            const modes = ["Online", "Physical", "Absent"];
+            const exceedingTimePerCourse = getRandomNumber(1, Math.floor(9 / (coursePerday)));
             for (let i = 0; i < coursePerday ; i++){
                 while (true) {
+                    const resetTimeHour = Number(( new Date(Date.now())).toLocaleTimeString().split(":")[0]);
+                    const openingTime=  Date.now()- (resetTimeHour * 60 * 60 * 1000 ) + (9 * 60 * 60 * 1000);
+                    const closingTime = Date.now()- (resetTimeHour * 60 * 60 * 1000 ) + (17 * 60 * 60 * 1000);
+                    console.log(new Date( Date.now()- (resetTimeHour * 60 * 60 * 1000 ) ).toLocaleTimeString(),
+                                new Date(openingTime).toLocaleTimeString(), new Date(closingTime).toLocaleTimeString(),
+                                coursePerday, exceedingTimePerCourse )
                     const lecturer = getUserLecturer()
                     let courseName = lecturer.courses[getRandomNumber(1, lecturer.courses.length+1)-1];
                     courseName = courseName === undefined ? lecturer.courses[0] : courseName ;
@@ -66,7 +74,8 @@ function createAttendance(){
                             course:  courseName,
                             lecturer: lecturer.fullName,
                             students: getUserStudents(),
-                            startTime: Date.now() - (x * 24 * 60 * 60 * 1000) + ( 2 * 60 * 60 * 1000)+(30 * 60 * 1000),
+                            mode: modes[getRandomNumber(0, 2)],
+                            startTime: Date.now() - (x * 24 * 60 * 60 * 1000),
                             createdAt: new Date(Date.now() - (x * 24 * 60 * 60 * 1000)).toLocaleDateString(),
                             endTime: Date.now() - (x * 24 * 60 * 60 * 1000) + ( 6 * 60 * 60 * 1000)+(12 * 60 * 1000)
                         }) 
@@ -84,7 +93,7 @@ function createAttendance(){
       
     }
      
-    // attendanceList.forEach((el)=>el.forEach((el1)=> console.log(el1)))
+  
     return attendanceList;
 
 }
