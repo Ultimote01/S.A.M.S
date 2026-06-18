@@ -113,7 +113,7 @@ export function AccountDropdownMenu({ anchor , handleSignOut,route}) {
         <DropdownLabel>Share feedback</DropdownLabel>
       </DropdownItem>
       <DropdownDivider />
-      <DropdownItem href="/" onClick={()=> handleSignOut(route)}>
+      <DropdownItem  href="/" onClick={()=> handleSignOut(route)}>
         <ArrowRightStartOnRectangleIcon />
         <DropdownLabel>Sign out</DropdownLabel>
       </DropdownItem>
@@ -124,42 +124,28 @@ export function AccountDropdownMenu({ anchor , handleSignOut,route}) {
 export function ApplicationLayout({ children }) {
   const [notifications, setNotifications] = useState([{eamil: ""}]);
   const navigate = useNavigate(); 
-  const location = useLocation();
+  // const location = useLocation();
 
 
 
 
 
-  async function handleSignOut () {
+  async function handleSignOut (route) {
+  
+    try {
 
-     try{
-        const signOutUpdate= localStorage.getItem("signOutUpdate");
-        if (signOutUpdate !== null && signOutUpdate !== undefined) {
-          /*eslint-disable-next-line */
-           const res = await api.post("auth/logout",  JSON.parse(signOutUpdate));
-           
-           localStorage.removeItem("signOutUpdate");
-           localStorage.removeItem("user");
-           if (location.pathname !== "") {
-            navigate("/", {replace: true});
-           } 
-           navigate(0);
-          }
-        
+      // eslint-disable-next-line
+      const res = await  api.post("/api/v1/users/logout",{
 
+      })
 
-        localStorage.removeItem("user");
-       if (location.pathname !== "") {
-            navigate("/", {replace: true});
-           } 
-           navigate(0);
-           
-    /* eslint-disable-next-line */
-    }catch(err) {
-     
+      localStorage.removeItem("active-user");
+      navigate(route, {replace: true})
+    } catch(err){
+      console.log(err)
     }
+   
   }
-
 
 
 
@@ -245,7 +231,7 @@ export function ApplicationLayout({ children }) {
                <RectangleGroupIcon/>
                 <SidebarLabel>Dashboard</SidebarLabel>
               </SidebarItem>
-              <SidebarItem to="/" >
+              <SidebarItem to="/lectures" >
                 <AcademicCapIcon/>
                 <SidebarLabel>Lectures</SidebarLabel>
               </SidebarItem>
@@ -298,10 +284,10 @@ export function ApplicationLayout({ children }) {
             </Dropdown>
               
           <Dropdown>
-            <DropdownButton as={NavbarItem}>
+            <DropdownButton style={{cursor: "pointer"}}  as={NavbarItem}>
             <Avatar src="default.jpg" square />
           </DropdownButton>
-          <AccountDropdownMenu  handleSignOut={handleSignOut}  route={"/auth/logout"}    anchor="bottom end" />
+          <AccountDropdownMenu   handleSignOut={handleSignOut}  route={"/"}    anchor="bottom end" />
           </Dropdown>
         </div>
         }

@@ -29,6 +29,10 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --spinner-background-image: radial-gradient(farthest-side, rgb(255 255 255 / 1) 94%, #0000)
+      top/10px 10px no-repeat,
+    conic-gradient(#0000 30%, rgb(255 255 255 / 1));
+  --spinner-webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 10px), #000 0);
 
   @media (max-width: 1024px) {
     font-size: 16px;
@@ -78,4 +82,28 @@ button:focus-visible {
 input:focus,
 input:focus-visible{
   outline: none;
+}
+
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  
+
+  border: 6px solid #e5e7eb64;
+  border-top-color: #797979d4;
+  
+
+  animation: spin 1s linear infinite;
+}
+
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

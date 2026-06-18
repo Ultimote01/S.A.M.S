@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ArrowUpRightIcon, UserGroupIcon } from '@heroicons/react/16/solid';
 import { CheckCircleIcon, ExclamationCircleIcon, MinusCircleIcon } from '@heroicons/react/24/outline';
 
@@ -6,25 +7,29 @@ import DashboardLayout from '../components/DashboardLayout';
 import { Badge } from '../components/badge';
 import { Divider } from '../components/divider';
 import { Heading, Subheading } from '../components/heading';
-import { getAllUsers, getAttendance } from '../data/data';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/table';
 import { createStringTitle, 
   getAttendeesByDate, 
   getAveragePresentStudents, 
   getTotalPresentStudents,
-  getRandomNumber
+  getRandomNumber,
+  calculateChartData,
+  getTotalPresentStudent,
+  getTotalAbsentStudent
 } from '../utils/helperFn';
 import api from '../api/api';
 import SimpleAreaChart from '../components/SimpleAreaChart';
 import CustomActiveShapePieChart from '../components/PieChart';
 import { ClockIcon } from '@heroicons/react/24/outline';
 import { StarIcon } from '@heroicons/react/24/outline';
+ 
 
 
 
 
 
 export function Stat({ title, value, change }) {
+
   return (
     <div>
       <Divider />
@@ -60,34 +65,44 @@ function Arrowpath({className}) {
  
  
 export default  function Home() {
-    const [data, setData] = useState([]);
-    const [userObject, setUserObject] = useState({});
-    const [notifications, setNotifications] = useState(userObject?.user?.notifications);
-    const [isLoading, setIsLoading] = useState(false);
-    const [attendancePerDay, setAttendancePerDay] = useState(null);
+  const [data, setData] = useState([]);
+  const [userObject, setUserObject] = useState(null);
+  const [notifications, setNotifications] = useState(userObject?.user?.notifications);
+  const [isLoading, setIsLoading] = useState(false);
+  const [attendancePerDay, setAttendancePerDay] = useState(null);
+  const [registeredStudents, setRegisteredStudents] =useState(0);
+  const navigate = useNavigate();
+
+  
+
+    useEffect(()=>{
+      function renderPage(user, registeredStudents,data){
+          setUserObject(user);
+          setRegisteredStudents(registeredStudents);
+          setData(data);
+          setAttendancePerDay(getAttendeesByDate(data,0))
+      }
+
+      const activeUser = localStorage.getItem("active-user");
+    
+      if (activeUser === undefined ||  activeUser === null ) {
+        return navigate("/", true);
+      }
 
     
-     
-    //  Total Attendees
-    // Student that Attended all the classes
-    // Student that attended average 
+      renderPage(JSON.parse(activeUser).user, 
+      JSON.parse(activeUser).registeredStudents,
+       JSON.parse(activeUser).attendanceList);
 
-      
-    useEffect(()=>{
-        Promise.resolve(getAttendance())
-        .then((data)=>{ setData(data); 
-        setUserObject(getAllUsers()[getRandomNumber(0, getAllUsers().length-1)])
-        setAttendancePerDay(getAttendeesByDate(data, 0))});
-       
-    },[])
+    },[navigate])
 
+
+ 
+    
+    if (userObject === null) return;
     if (!data[0]) return;
 
-    const presentStudents = attendancePerDay.flatMap((el)=>el).length;
-    const expectedStudents = getAllUsers().slice(8).length * attendancePerDay.length;
-    const presentPercentage = (presentStudents / expectedStudents) * 100;
-    const absentPercentage = ((expectedStudents - presentStudents)/expectedStudents) * 100;
- 
+    
   
     
     
@@ -119,7 +134,9 @@ export default  function Home() {
     setNotifications(ModifiedEl);
     
   }
+  
 
+  
 
    
   return (
@@ -166,12 +183,17 @@ export default  function Home() {
           <div className='flex mb-3 justify-between text-[0.6rem] leading-[1.2em] md:items-center'>
            <div className='flex flex-col  md:flex-row md:items-center '> 
             <ClockIcon className='size-4 md:mr-1.5'/>
-            <h6>Attended all classes</h6>
+            <h6>{userObject.role === "student"?"Classes (Present)": "Attended All Classes"}</h6>
             </div>
               <ExclamationCircleIcon className='size-3.5'/>
             </div>
           <div >
-            <h4 className='text-[0.9rem] font-bold'>{ getTotalPresentStudents(attendancePerDay.flatMap((students)=> students), attendancePerDay.length)}</h4>
+            <h4 className='text-[0.9rem] font-bold'>{ 
+              userObject.role === "student"?
+              getTotalPresentStudent(userObject?.id, attendancePerDay):
+              getTotalPresentStudents(attendancePerDay.flatMap((students)=> students), attendancePerDay.length
+            )
+            }</h4>
             <div className='flex items-center'>
               <ArrowUpRightIcon className='size-2'/>
                <p className=' ml-0.5 text-[0.55rem] leading-[0.7rem]'> 
@@ -183,12 +205,16 @@ export default  function Home() {
           <div className='flex mb-3 justify-between text-[0.6rem] leading-[1.2em] md:items-center'>
            <div className='flex flex-col  md:flex-row md:items-center '> 
             <MinusCircleIcon className='size-4 md:mr-1.5'/>
-            <h6>Above average</h6>
+            <h6>{userObject.role === "student"? "Classes (Absent)":"Above Average"}</h6>
             </div>
               <ExclamationCircleIcon style={{transform: "skew(180deg)"}} className='size-3.5'/>
             </div> 
           <div >
-            <h4 className='text-[0.9rem] font-bold'>{getAveragePresentStudents(attendancePerDay.flatMap((students)=> students), attendancePerDay.length)}</h4>
+            <h4 className='text-[0.9rem] font-bold'>{
+              userObject.role === "student" ?
+              getTotalAbsentStudent(userObject?.id, attendancePerDay):
+              getAveragePresentStudents(attendancePerDay.flatMap((students)=> students), attendancePerDay.length)}
+            </h4>
             <div className='flex items-center'>
               <ArrowUpRightIcon className='size-2'/>
                <p className=' ml-0.6 text-[0.55rem] leading-[0.7rem]'> 
@@ -217,7 +243,8 @@ export default  function Home() {
               </select>
             </div>
           <CustomActiveShapePieChart attendanceData={[
-              presentPercentage, absentPercentage
+              calculateChartData(attendancePerDay,registeredStudents)[0],
+              calculateChartData(attendancePerDay,registeredStudents)[1]
           ]}/>
           <div className='flex justify-between items-center px-6 pb-4 text-[0.7em]'>
             <div className='flex items-center'>
@@ -225,7 +252,7 @@ export default  function Home() {
               <span>
                 Present(
                   <span>
-                    {Math.round(presentPercentage)}%
+                    {Math.round(calculateChartData(attendancePerDay,registeredStudents)[0])}%
                   </span>)
               </span>
             </div>
@@ -234,7 +261,7 @@ export default  function Home() {
                <span>
                 Absent(
                   <span>
-                    {Math.floor(absentPercentage)}%
+                    {Math.floor(calculateChartData(attendancePerDay,registeredStudents)[1])}%
                   </span>
                   )
 
@@ -266,7 +293,7 @@ export default  function Home() {
             title={`attendance #${new Date(attendance.startTime).toLocaleDateString()}`}
             >
               <TableCell>
-                {new Date(attendance.startTime).toLocaleDateString()}
+                {new Date(attendance.createdAt).toLocaleDateString()}
               </TableCell>
 
               <TableCell>{

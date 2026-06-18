@@ -1,11 +1,11 @@
 import { ApplicationLayout } from './application-layout'
 
 
-export default function DashboardLaypout({user, data,children}) {
+export default function DashboardLaypout({children}) {
 
    
  
     return(
-      <ApplicationLayout user={user} data={data}>{children}</ApplicationLayout>
+      <ApplicationLayout>{children}</ApplicationLayout>
     )
 }

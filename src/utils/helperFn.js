@@ -28,6 +28,7 @@ export function getTotalPresentStudents(students,attendanceListSize){
 
 export function getAveragePresentStudents(students, attendanceListSize) {
  let average = 0
+
     students.forEach(student => {
         student = createStringTitle(student)
         attendanceMap.set(student, 
@@ -53,7 +54,7 @@ export function getAttendeesByDate(data, date){
 
      data.forEach((attendance)=> {
         
-       if (attendance.createdAt === new Date(Date.now()-(date * 24 * 60 * 60 * 1000 )).toLocaleDateString()){
+       if (new Date(attendance.createdAt).toLocaleDateString() === new Date(Date.now()-(date * 24 * 60 * 60 * 1000 )).toLocaleDateString()){
        totalAttendeesPerDay.push(attendance.students)
        }
         
@@ -71,4 +72,48 @@ export const getRandomNumber =(min, max)=>{
       min = Math.ceil(min);
       max = Math.floor(max);
       return Math.floor( Math.random() * (max - min + 1)) + min;
+  }
+
+
+
+  export function calculateChartData(attendancePerDay, registeredStudents){
+    const presentStudents = attendancePerDay.flatMap((el)=>el).length;
+    const expectedStudents = registeredStudents * attendancePerDay.length;
+    const presentPercentage = (presentStudents / expectedStudents) * 100;
+    const absentPercentage = ((expectedStudents - presentStudents)/expectedStudents) * 100;
+    
+    return [presentPercentage, absentPercentage]
+  }
+
+
+  export function getTotalPresentStudent(student, attendancePerDay){
+
+    let presentInClass = 0;
+    
+    if (student !== null && attendancePerDay !== null){
+
+        attendancePerDay.forEach((students)=>{
+        
+        if (students.indexOf(String(student)) > -1 )  presentInClass++;})
+
+        }
+
+
+    return presentInClass;
+     
+  }
+
+
+  export function getTotalAbsentStudent(student, attendancePerDay) {
+
+    let absentInClass = 0;
+    
+    if (student !== null && attendancePerDay !== null){
+
+        attendancePerDay.forEach((students)=>{
+        
+        if (students.indexOf(String(student)) === -1 )  absentInClass++;})
+
+    }
+    return absentInClass;
   }

@@ -1,7 +1,10 @@
 import axios from "axios";
 
+const bkUrlLocalhost = "http://localhost:3000";
+// const bkUrlRemote = "";
+
 const api = axios.create({
-  baseURL: "https://yt-backend-1-8kek.onrender.com",
+  baseURL: bkUrlLocalhost,
   withCredentials: true
 });
 
