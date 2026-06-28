@@ -39,7 +39,7 @@ import {
   LifebuoyIcon,
   ChatBubbleLeftIcon
 } from '@heroicons/react/20/solid'
-import { useLocation, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import clsx from 'clsx'
 import {  useState } from 'react'
 
@@ -138,7 +138,7 @@ export function ApplicationLayout({ children }) {
       const res = await  api.post("/api/v1/users/logout",{
 
       })
-
+      
       localStorage.removeItem("active-user");
       navigate(route, {replace: true})
     } catch(err){
@@ -196,7 +196,7 @@ export function ApplicationLayout({ children }) {
               <DropdownButton as={NavbarItem}>
                 <Avatar src="default.jpg" square />
               </DropdownButton>
-              <AccountDropdownMenu  handleSignOut={handleSignOut} route={"/auth/logout"}    anchor="bottom end" />
+              <AccountDropdownMenu  handleSignOut={handleSignOut} route={"/"}    anchor="bottom end" />
             </Dropdown>
           
           </NavbarSection>
@@ -235,7 +235,7 @@ export function ApplicationLayout({ children }) {
                 <AcademicCapIcon/>
                 <SidebarLabel>Lectures</SidebarLabel>
               </SidebarItem>
-              <SidebarItem to="/" >
+              <SidebarItem to="/live-class" >
                 <LifebuoyIcon/>
                 <SidebarLabel>Live Class</SidebarLabel>
               </SidebarItem>

@@ -89,12 +89,8 @@ input:focus-visible{
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  
-
   border: 6px solid #e5e7eb64;
   border-top-color: #797979d4;
-  
-
   animation: spin 1s linear infinite;
 }
 

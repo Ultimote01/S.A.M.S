@@ -59,9 +59,9 @@ async function handleSubmit(e) {
         },2000)
          
 
-    } catch(e) {
-      setErrorMessage("An error occured. Please try again..")
-      console.log(e);
+    } catch(err) {
+      setErrorMessage(err.response.data?.message)
+      
     }
     
   }
@@ -92,12 +92,7 @@ return(
             </div>
             <form className="mt-8 px-4 lg:px-0" onSubmit={handleSubmit}>
                 <div className="flex flex-col">
-
-                  {/* <div className="flex flex-col mt-[1.5rem]">
-                    <label htmlFor="email" className="font-semibold pl-1 text-[1rem] dark:text-white">Email</label>
-                    <input id="pex" className="py-2 pl-2 border-[2.8px] border-solid  border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600"
-                     type="email" name="email" placeholder="jhondoe@example.com" />
-                  </div> */}
+                  <label htmlFor="email" className="font-semibold pl-1 text-[1rem] dark:text-white">Email</label>
                   <div className="flex items-center bg-white py-2 pl-2 border-[2.8px] border-solid  border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600"> 
                     <EnvelopeIcon fill="white" stroke="black" className="size-5 mr-2 "/>
                       <input className="w-[100%] dark:bg-zinc-100" id="email" type="email" name="email" placeholder="jhondoe@example.com" />
@@ -124,7 +119,7 @@ return(
 
                   <h3 className="mt-2 pl-2 text-[0.8rem]">Need an account? <Link to={"/signup"} className="text-[0.9rem] text-[rgb(252,130,0)] ">Signup</Link></h3>
                   <div className="flex mt-12 lg:justify-center">
-                      <button className=" w-[100%] py-3 bg-[var(--accent-bg)] text-[var(--accent)] rounded-md lg:px-10 lg:w-[inherit] ">{ isLoading?<Spinner/>: "Login"}</button>
+                      <button className=" flex justify-center w-[100%] py-3 bg-[var(--accent-bg)] text-[var(--accent)] rounded-md lg:px-10 lg:w-[inherit] ">{ isLoading?<Spinner/>: "Login"}</button>
                   </div>
                    
                 </div>

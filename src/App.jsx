@@ -3,6 +3,7 @@
  import SignupPage from "./pages/SignupPage";
  import Dashboard from "./pages/Dashboard";
 import LecturesPage from "./pages/LecturesPage";
+import AttendacePage from "./pages/AttendancePage";
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
       <Route path="/signup" element={<SignupPage/>}/>
       <Route path="/dashboard" element={<Dashboard/>}/>
       <Route path="/lectures" element={<LecturesPage/>}/>
+      <Route path="/live-class" element={<AttendacePage/>}/>
     </Routes>
    
    </BrowserRouter>

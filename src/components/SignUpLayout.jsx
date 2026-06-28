@@ -6,48 +6,17 @@ import { LockClosedIcon } from "@heroicons/react/24/outline";
 import { PhoneIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import Select from 'react-select';
 import { Link, useNavigate } from "react-router-dom";
 
 
 import api from "../api/api";
 import Spinner from "./Spinner";
+import SelectMultiple from "./SelectMultiple";
  
 
-const courseOptions = [
-  { value: 'English', label: 'English' },
-  { value: 'Math II', label: 'Math II' },
-  {value:'Artificial Intelligence', label: 'Artificial Intelligence'},
-  {value: 'System Administration', label: 'System Administration'},
-  {value: 'Computer Networking', label: 'Computer Networking'},
-  {value: 'Logic Design', label: 'Logic Design'},
-  {value: 'Operating System', label: 'Operating System'},
-  {value: 'Cyber Security', label: 'Cyber Security'}
-];
-
-
-const customStyles = {
  
-  control: (provided) => ({
-    ...provided,
-    border: 'none',
-    boxShadow: 'none',
-    '&:hover': { border: 'none' }
-  }),
 
-
-  valueContainer: (provided) => ({
-    ...provided,
-    maxHeight: '40px',      
-    overflowY: 'auto',         
-    
-   
-    '&::-webkit-scrollbar': {
-      width: '4px',           
-      display: 'none'         
-    }
-  })
-};
+ 
 
 
 export function SignUpLayout(){
@@ -100,7 +69,6 @@ export function SignUpLayout(){
             reset();
         
         }catch(err) {
-            console.log("Err",err.status, err.response)
             setResError(err.response.data?.message)
             
         }
@@ -123,7 +91,7 @@ export function SignUpLayout(){
                     </div>
                     <div className="text-center px-6"> 
                     <hr className="dark:bg-white" /> 
-                    <h1 className="mt-3 text-[1.3rem] font-semi-bold  md:text-[1.4rem]">Create an Account</h1>
+                    <h1 className="mt-3 text-[1.3rem] font-semibold  md:text-[1.4rem]">Create an Account</h1>
                     <h2 className="text-[0.9rem] mt-2">Fill in the details below to register</h2>
                      <h3 className="mt-4 text-[0.9rem] text-center text-[rgb(238,28,28)]">{resError}</h3>
                     </div>
@@ -212,7 +180,7 @@ export function SignUpLayout(){
                                 <label htmlFor="department" className="font-semibold pl-1 text-[1rem] dark:text-white">Department</label>
                                 <div className="flex items-center py-2 pl-2 border-[2.8px] border-solid  bg-white border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600 "> 
                                 <BuildingLibraryIcon className="size-5 mr-2"/>
-                                 <select  id="department" className="bg-white w-[100%]  md:pr-[4.5rem]"  
+                                 <select  id="department" className="bg-white   w-[100%] dark:bg-zinc-100  md:pr-[4.5rem]"  
                                     name="department" 
                                         {...register(
                                             "department",
@@ -231,7 +199,7 @@ export function SignUpLayout(){
                                     <label htmlFor="role" className="font-semibold pl-1 text-[1rem] dark:text-white">Role</label>
                                     <div className="flex items-center py-2 pl-2 border-[2.8px] border-solid  bg-white border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600">
                                     <UserPlusIcon className="size-5 mr-2 "/>
-                                    <select id="role" className="bg-white w-[100%]  md:pr-[7.2rem]"
+                                    <select id="role" className=" w-[100%] bg-white   dark:bg-zinc-100 md:pr-[7.2rem]"
                                      name="role" 
                                         {...register(
                                             "role",
@@ -273,14 +241,7 @@ export function SignUpLayout(){
                                 <label htmlFor="courses" className="font-semibold pl-1 text-[1rem] dark:text-white">Courses</label>
                                 <div className="flex items-center  pl-2 border-[2.8px] border-solid  bg-white border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600 md:max-w-[16rem]"> 
                                 <AcademicCapIcon className="size-5 mr-2"/>
-                                   <Select
-                                       className="w-[100%] md:w-[15rem]"
-                                        options={courseOptions}
-                                        value={selectedOptions}
-                                        onChange={handleChange}
-                                        isMulti={true} 
-                                        styles={customStyles} 
-                                    />
+                                   <SelectMultiple id={"courses"} className={'w-[100%] md:w-[15rem]'} handleChange={handleChange} selectedOptions={selectedOptions}/>
                                  </div>
                                   <span className="text-[0.75rem] text-[rgb(238,28,28)]">{errors.courses?.message}</span>
                              </div>
@@ -357,11 +318,11 @@ export function SignUpLayout(){
 
 
                           <div className="flex  mt-12 md:justify-center">
-                              <button className=" w-[100%] py-2 bg-[var(--accent-bg)] text-[var(--accent)] rounded-md md:px-20 md:w-[inherit] ">{isLoading?<Spinner/>:"Register"}</button>
+                              <button className=" flex justify-center w-[100%] py-2 bg-[var(--accent-bg)] text-[var(--accent)] rounded-md md:px-20 md:w-[inherit] ">{isLoading?<Spinner/>:"Register"}</button>
                           </div>
 
                           <div className="flex pt-2 justify-center text-[0.79rem]">
-                                 <h3 >Already a member? <Link to={"/"} className="text-[rgb(252,130,0)] text-[0.9rem] font-semi-bold">Login</Link></h3>
+                                 <h3 >Already a member? <Link to={"/"} className="text-[rgb(252,130,0)] text-[0.9rem] font-semibold">Login</Link></h3>
                           </div>
                           
                            
