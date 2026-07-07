@@ -8,6 +8,7 @@ import api from "../api/api";
 import CreateLectureLayout from "../components/CreateLectureLayout";
 import { ArrowPathIcon, CalendarDaysIcon } from "@heroicons/react/20/solid";
 import { ClockIcon } from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router-dom";
  
 
 
@@ -17,6 +18,8 @@ export default function LecturesPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [userData, setUserData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [isLiveSession, setIsLiveSession] = useState(false);
+    const navigate = useNavigate()
 
  
 async function getLecturesRemote() {
@@ -31,6 +34,12 @@ async function getLecturesRemote() {
       
     }catch(err) {
         console.log(err)
+        const errResponse = err?.response?.data?.message?? '';
+         if (errResponse.includes("User not found") ){
+                localStorage.removeItem("active-user");
+                return navigate('/', true)
+              }
+         
          
     }
     setUserData(data);
@@ -38,8 +47,17 @@ async function getLecturesRemote() {
  }
 
  useEffect(()=> {
+     function setIsLiveSessionFn(){
+        setIsLiveSession(true);
+        }
+        const activeUser = localStorage.getItem("active-user");
 
-    
+        if (activeUser === undefined ||  activeUser === null ) {
+            return navigate("/", true);
+        }else if (activeUser !== undefined ||  activeUser !== null ){
+           setIsLiveSessionFn();
+        }
+ 
         if (!pageLoaded.current){
             getLecturesRemote();
             pageLoaded.current = true;
@@ -47,10 +65,10 @@ async function getLecturesRemote() {
         
     },[])
  
-
+    if (!isLiveSession) return;
 
     return( <LecturesPageLayout>
-        <Heading className={" mb-4 font-semibold text-[1.3rem]  -ml-2.5 dark:text-white lg:-ml-6"}>Upcomming Lectures
+        <Heading className={" mb-4 font-semibold text-[1.3rem]  -ml-2.5 dark:text-white lg:-ml-6"}>Upcoming Lectures
         
     
         <span className="pt-1 flex">
@@ -87,19 +105,19 @@ async function getLecturesRemote() {
                 </TableHead>
             <TableBody>
                 {lectureList !== null && lectureList.map((lecture,index)=> <TableRow key={index}>
-                    <TableCell className={'border-r-[2px] border-dash'}>
+                    <TableCell className={'border-r-[2px] border-dash dark:border-r-[4px]'}>
                         {new Date(lecture.startTime).toLocaleDateString()}
                     </TableCell>
-                    <TableCell className={'border-r-[2px] border-dash'}>
+                    <TableCell className={'border-r-[2px] border-dash dark:border-r-[4px]'}>
                         {lecture.course}
                     </TableCell>
-                    <TableCell className={'border-r-[2px] border-dash'}>
+                    <TableCell className={'border-r-[2px] border-dash dark:border-r-[4px]'}>
                         {lecture.lecturer}
                     </TableCell>
-                    <TableCell className={'border-r-[2px] border-dash'}>
+                    <TableCell className={'border-r-[2px] border-dash dark:border-r-[4px]'}>
                         {new Date(lecture.startTime).toLocaleTimeString()}
                     </TableCell>
-                    <TableCell className={'border-r-[2px] border-dash'}>{
+                    <TableCell className={'border-r-[2px] border-dash dark:border-r-[4px]'}>{
                         <div className="flex items-center">
                             <ClockIcon className="size-4"/>
                              <span className="pl-1">Pending</span>
@@ -112,6 +130,12 @@ async function getLecturesRemote() {
                 </TableRow>)}
             </TableBody>
         </Table>
+         {
+            lectureList === null || lectureList.length === 0 && 
+            <div className=" mt-10  text-[1.2rem] flex justify-center items-center">
+                There are no upcoming lectures 
+            </div>
+         }
     </LecturesPageLayout>
     )
 

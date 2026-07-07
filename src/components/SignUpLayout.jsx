@@ -63,6 +63,7 @@ export function SignUpLayout(){
             });
             
             localStorage.setItem("active-user", JSON.stringify(res.data));
+            localStorage.setItem("previous-page", "signup");
             setTimeout(()=>{
             navigate("/dashboard", true);
             },2000)

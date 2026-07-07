@@ -8,7 +8,7 @@ const api = axios.create({
   withCredentials: true
 });
 
-
+const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 api.interceptors.request.use((config) => {
 
   
@@ -16,6 +16,7 @@ api.interceptors.request.use((config) => {
   if (user !== 'undefined') {
     user = JSON.parse(user)
     config.headers= {...config.headers,
+       'X-Custom-Header': userTimeZone,
       Authorization: `Bearer ${user?.token}`
     };
    

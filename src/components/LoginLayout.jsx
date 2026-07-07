@@ -25,6 +25,7 @@ export default function LoginLayout(){
     }
 
     if (user !== undefined && user !== null) {  
+
       navigate("/dashboard", {replace: true})
     } else setIsLiveSessionFn();
        
@@ -54,9 +55,12 @@ async function handleSubmit(e) {
         return;
       }
         localStorage.setItem("active-user", JSON.stringify(res.data));
+        localStorage.setItem("previous-page", "login")
         setTimeout(()=>{
           navigate("/dashboard", true);
         },2000)
+
+
          
 
     } catch(err) {

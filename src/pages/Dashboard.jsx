@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowUpRightIcon, UserGroupIcon } from '@heroicons/react/16/solid';
 import { CheckCircleIcon, ExclamationCircleIcon, MinusCircleIcon } from '@heroicons/react/24/outline';
@@ -22,7 +22,6 @@ import SimpleAreaChart from '../components/SimpleAreaChart';
 import CustomActiveShapePieChart from '../components/PieChart';
 import { ClockIcon } from '@heroicons/react/24/outline';
 import { StarIcon } from '@heroicons/react/24/outline';
- 
 
 
 
@@ -63,6 +62,9 @@ function Arrowpath({className}) {
 
  
  
+
+
+ 
  
 export default  function Home() {
   const [data, setData] = useState([]);
@@ -71,30 +73,60 @@ export default  function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [attendancePerDay, setAttendancePerDay] = useState(null);
   const [registeredStudents, setRegisteredStudents] =useState(0);
+  const pageLoaded = useRef(false);
   const navigate = useNavigate();
 
-  
+ 
 
-    useEffect(()=>{
-      function renderPage(user, registeredStudents,data){
-          setUserObject(user);
-          setRegisteredStudents(registeredStudents);
-          setData(data);
-          setAttendancePerDay(getAttendeesByDate(data,0))
+  const loadData = function(){
+      let activeUser = localStorage.getItem("active-user");
+      const previousPage = localStorage.getItem("previous-page");
+      
+       if (previousPage === undefined ||  previousPage === null ) {
+       
+           reValidateUser();
+           pageLoaded.current =  true;
       }
-
-      const activeUser = localStorage.getItem("active-user");
     
       if (activeUser === undefined ||  activeUser === null ) {
         return navigate("/", true);
       }
-
-    
+      
+      localStorage.removeItem("previous-page")
       renderPage(JSON.parse(activeUser).user, 
       JSON.parse(activeUser).registeredStudents,
-       JSON.parse(activeUser).attendanceList);
+      JSON.parse(activeUser).attendanceList);
+     }
 
-    },[navigate])
+   
+  async function reValidateUser() {
+      try {
+          await api.get("/api/v1/attendance-list/");
+        }catch(err) {
+            if (err.response.data.message.includes("User not found") ){
+              localStorage.removeItem("active-user");
+              return navigate('/', true)
+            }
+        }
+    }
+
+
+  function renderPage(user, registeredStudents,data){
+        setUserObject(user);
+        setRegisteredStudents(registeredStudents);
+        setData(data);
+        setAttendancePerDay(getAttendeesByDate(data,0));
+    }
+  
+
+  useEffect(()=>{ 
+
+      if (!pageLoaded.current){
+        loadData();
+        pageLoaded.current = true;
+      }
+
+  },[])
 
 
  
@@ -140,7 +172,9 @@ export default  function Home() {
 
    
   return (
-    <DashboardLayout user={userObject?.user} data={data} >
+    <DashboardLayout user={userObject?.user} data={data} 
+      setpageReferenceFunctions={{set:true,name:'loadData',function:loadData}}
+    >
       { notifications?.map((notification, index)=> <div key={index} className='bg-[rgb(244,244,245,1)]   hidden gap-x-[2rem] w-[60%]   text-center py-[0.7rem] rounded-lg justify-center ml-[7rem] items-center mt-[-2rem] mb-[1rem] lg:ml-[15rem] lg:mt-[-1rem] lg:w-[50%] lg:flex dark:bg-zinc-800 dark:text-white' >
       {notification?.message}
       {notification?.action && <button  disabled={isLoading} className=" text-white text-[.82rem] bg-purple-500 px-[0.4rem] hover:cursor-pointer rounded-[6px] disabled:opacity-60 disabled:cursor-default" onClick={()=> handleNAction(notification?.action?.route)}>
@@ -326,3 +360,7 @@ export default  function Home() {
     </DashboardLayout>
   )
 }
+
+
+
+ 

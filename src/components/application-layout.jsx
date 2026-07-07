@@ -120,15 +120,13 @@ export function AccountDropdownMenu({ anchor , handleSignOut,route}) {
     </DropdownMenu>
   )
 }
- 
+
+
+
 export function ApplicationLayout({ children }) {
-  const [notifications, setNotifications] = useState([{eamil: ""}]);
+  const [notifications, setNotifications] = useState([{email: ""}]);
   const navigate = useNavigate(); 
   // const location = useLocation();
-
-
-
-
 
   async function handleSignOut (route) {
   
@@ -140,9 +138,9 @@ export function ApplicationLayout({ children }) {
       })
       
       localStorage.removeItem("active-user");
-      navigate(route, {replace: true})
+      navigate(route, {replace: true});
     } catch(err){
-      console.log(err)
+      console.log(err);
     }
    
   }
@@ -239,7 +237,7 @@ export function ApplicationLayout({ children }) {
                 <LifebuoyIcon/>
                 <SidebarLabel>Live Class</SidebarLabel>
               </SidebarItem>
-              <SidebarItem  to="/">
+              <SidebarItem  to="/settings">
                 <Cog6ToothIcon />
                 <SidebarLabel>Settings</SidebarLabel>
               </SidebarItem>
