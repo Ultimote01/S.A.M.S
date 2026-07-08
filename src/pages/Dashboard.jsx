@@ -82,6 +82,7 @@ export default  function Home() {
       setIsLoadingX(true);
       const activeUser = localStorage.getItem("active-user");
       try {
+        console.log("Active user", activeUser);
           const res  = await api.get("/api/v1/attendance-list/");
           if (activeUser){
             const activeObj = JSON.parse(activeUser);
