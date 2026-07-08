@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const bkUrlLocalhost = "http://localhost:3000";
-// const bkUrlRemote = "";
+const bkUrlLocalhost = "https://s-a-m-s-bk.onrender.com";
+
 
 const api = axios.create({
   baseURL: bkUrlLocalhost,
