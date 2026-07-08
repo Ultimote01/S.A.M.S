@@ -47,12 +47,12 @@ export default function MarkAttendanceOffline() {
                     <h1 className='text-black font-semibold text-[1.6rem] dark:text-white'>Mark class attendance</h1>
                     <p  className='text-black mt-2 text-[0.9rem] dark:text-white'>Fill in the fields below to submit</p>
                 </div>
-                <hr className=' mt-5 mx-10 border-[0.3px] border-dash border-zinc-100 dark:border-zinc-600'/>
+                <hr className=' mt-5 mx-8 border-[0.2px] border-dash border-zinc-200 dark:border-zinc-600'/>
 
                 {resMessage?  <h4 className=' px-6 text-center flex justify-center text-[0.9rem] mt-2 text-black dark:text-white'>{resMessage}</h4>:
                  <h4 className=' px-6 text-center flex justify-center text-[0.9rem] mt-2 text-[red]'>{resError}</h4>}
                
-                <form className='mt-12' onSubmit={handleSubmit}>
+                <form className='mt-12 pl-4' onSubmit={handleSubmit}>
                     <div className='flex  pl-3 mb-4 sm:pl-6'>
                          <label htmlFor='course' className='pb-1 pl-0.5 font-semibold text-[1rem] dark:text-white'>Course: </label>
                          <div className='text-[0.95rem] pt-1 flex flex-col ml-2 bg-orange-50 max-w-[10rem] rounded-[6px] border-[0.2px] border-solid border-zinc-200'>
@@ -65,7 +65,7 @@ export default function MarkAttendanceOffline() {
                                 <span className='pl-2 text-[0.9rem]'>How was class today?</span>
                             </label>
                              <div className='flex flex-col max-w-[80%] bg-white p-1 sm:max-w-[50%] rounded-[6px] border-[0.4px] border-solid border-zinc-200'>
-                            <input id='answer' className=' text-[0.9rem] text-black dark:bg-white' type='text'/>
+                            <input id='answer' className=' text-[0.9rem] text-black dark:bg-white' type='text' placeholder='Answer'/>
                          </div>  
                         </div>
                           
@@ -73,7 +73,7 @@ export default function MarkAttendanceOffline() {
                     <div className='flex flex-col pl-3 mb-4 sm:pl-6'>
                          <label htmlFor='id' className='pb-1 pl-0.5 font-semibold text-[1rem] dark:text-white'>Enter your student ID</label>
                          <div className='flex flex-col max-w-[80%] bg-white p-1 sm:max-w-[50%] rounded-[6px] border-[0.4px] border-solid border-zinc-200'>
-                            <input id='id' className=' text-[0.9rem] text-black dark:bg-white' type='text'/>
+                            <input id='id' className=' text-[0.9rem] text-black dark:bg-white' type='text' placeholder='1234567'/>
                          </div>  
                     </div>
 

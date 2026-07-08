@@ -103,7 +103,26 @@ async function  markAttendanceOnlineStudents(activeClass, count) {
                 
         }
 }
-    
+   function getAttendancePerClass(course) {
+        const activeClass = localStorage.getItem('active-user');
+        setTimeout(async () => {
+            try {
+                const res = await api.get(`/api/v1/attendance-list/attendanceListPerClass/${course}`)
+                console.log(res);
+                if (activeClass){
+                    const activeClassObj = JSON.parse(activeClass);
+                    const isAdded = activeClassObj.attendanceList.some((el)=>el.createdAt === res.data.concludedClass.createdAt);
+                    console.log(isAdded);
+                    if (!isAdded){
+                        activeClassObj.attendanceList.push(res.data.concludedClass);
+                        localStorage.setItem("active-user", JSON.stringify(activeClassObj));
+                    }
+                }
+            } catch(err) {
+                console.log(err);
+            }
+        }, 1000);
+    }
 
      function handleTimeOutStartTime(classes=[]) {
 
@@ -136,6 +155,7 @@ async function  markAttendanceOnlineStudents(activeClass, count) {
                  getClassesRemote(); 
                  setIsModalOpen(false);
                  setQrCode('');
+                 getAttendancePerClass(classsEl.course);
                 },new Date(classsEl.endTime).valueOf() -
                 new Date(Date.now()).valueOf());
                timeOutIDs.push(timeout);
@@ -155,12 +175,12 @@ async function  markAttendanceOnlineStudents(activeClass, count) {
                 handleTimeOutStartTime(res.data.lectures.map((lecture)=>lecture.classesPerDay).flatMap((classPerDay)=> classPerDay));
                 handleTimeOutEndTime(res.data.lectures.map((lecture)=>lecture.classesPerDay).flatMap((classPerDay)=> classPerDay));
         }catch(err) {
-         console.log(err);
-         const errResponse = err?.response?.data?.message?? '';
-         if (errResponse.includes("User not found") ){
-                localStorage.removeItem("active-user");
-                return navigate('/', true)
-              }
+          if (!err?.response?.data.message) return;
+            if (err.response.data.message.includes("User not found") ||
+            err.response.data.message.includes("Session expired") ){
+              localStorage.removeItem("active-user");
+              return navigate('/', true)
+            }
         }
         setIsLoading(false);
     }
@@ -176,10 +196,10 @@ async function  markAttendanceOnlineStudents(activeClass, count) {
         }
         const activeUser = localStorage.getItem("active-user");
 
-        if (activeUser === undefined ||  activeUser === null ) {
+        if (!activeUser ) {
             return navigate("/", true);
 
-        }else if (activeUser !== undefined ||  activeUser !== null ){
+        }else if (activeUser ){
            
            setIsLiveSessionFn();
         }

@@ -70,7 +70,7 @@ export function SignUpLayout(){
             reset();
         
         }catch(err) {
-            setResError(err.response.data?.message)
+            setResError(err.response?.data?.message)
             
         }
         setIsLoading(false);

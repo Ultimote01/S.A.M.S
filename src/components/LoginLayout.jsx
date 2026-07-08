@@ -59,12 +59,8 @@ async function handleSubmit(e) {
         setTimeout(()=>{
           navigate("/dashboard", true);
         },2000)
-
-
-         
-
     } catch(err) {
-      setErrorMessage(err.response.data?.message)
+      setErrorMessage(err.response?.data?.message)
       
     }
     

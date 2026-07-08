@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import {  useEffect, useState } from "react";
 import { LockClosedIcon, UserIcon} from "@heroicons/react/20/solid";
 import { useForm } from "react-hook-form";
 import {  EyeSlashIcon } from "@heroicons/react/24/outline";
@@ -8,6 +8,7 @@ import { EyeIcon } from "@heroicons/react/24/outline";
 import SettingsLayout from "../components/SettingsLayout"
 import Spinner from "../components/Spinner";
 import api from "../api/api";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -18,9 +19,27 @@ export default function SettingsPage() {
     const [revealPassword, setRevealPassword] = useState(false);
     const [revealConfirmPassword, setRevealConfirmPassword] = useState(false);
     const [resMessage, setresMessage] = useState(['',0]);
+    const [renderPage, setRenderPage] = useState(true);
+    const navigate = useNavigate()
    
     const {errors} = formState;
 
+
+
+     async function reValidateUser() {
+          try {
+              await api.get("/api/v1/users/");
+             
+            }catch(err) {
+                  setRenderPage(false);
+                if (!err?.response?.data.message) return;
+                if (err.response.data.message.includes("User not found") ||
+                err.response.data.message.includes("Session expired") ){
+                  localStorage.removeItem("active-user");
+                  return navigate('/', true)
+                }
+            }
+        }
 
     
     async function handleUpdatePassword (data){
@@ -65,8 +84,14 @@ export default function SettingsPage() {
         setIsLoading([false,0])
     }
 
+    useEffect(()=> {
+        const ck =()=>{
+             reValidateUser();
+        }
+        ck();
+    },[])
 
-
+    if (!renderPage) return;
 
     return (
         <SettingsLayout>

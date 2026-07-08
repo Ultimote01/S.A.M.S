@@ -33,12 +33,13 @@ async function getLecturesRemote() {
         }
       
     }catch(err) {
-        console.log(err)
-        const errResponse = err?.response?.data?.message?? '';
-         if (errResponse.includes("User not found") ){
-                localStorage.removeItem("active-user");
-                return navigate('/', true)
-              }
+         if (!err?.response?.data.message) return;
+         
+            if (err.response.data.message.includes("User not found") ||
+            err.response.data.message.includes("Session expired") ){
+              localStorage.removeItem("active-user");
+              return navigate('/', true)
+            }
          
          
     }
@@ -52,9 +53,9 @@ async function getLecturesRemote() {
         }
         const activeUser = localStorage.getItem("active-user");
 
-        if (activeUser === undefined ||  activeUser === null ) {
+        if (!activeUser) {
             return navigate("/", true);
-        }else if (activeUser !== undefined ||  activeUser !== null ){
+        }else if (activeUser){
            setIsLiveSessionFn();
         }
  

@@ -88,7 +88,7 @@ export default  function Home() {
            pageLoaded.current =  true;
       }
     
-      if (activeUser === undefined ||  activeUser === null ) {
+      if (!activeUser) {
         return navigate("/", true);
       }
       
@@ -101,9 +101,12 @@ export default  function Home() {
    
   async function reValidateUser() {
       try {
-          await api.get("/api/v1/attendance-list/");
+          await api.get("/api/v1/users/");
         }catch(err) {
-            if (err.response.data.message.includes("User not found") ){
+
+            if (!err?.response?.data.message) return;
+            if (err.response.data.message.includes("User not found") ||
+            err.response.data.message.includes("Session expired") ){
               localStorage.removeItem("active-user");
               return navigate('/', true)
             }
