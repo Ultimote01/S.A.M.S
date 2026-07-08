@@ -82,13 +82,13 @@ export default  function Home() {
       setIsLoadingX(true);
       const activeUser = localStorage.getItem("active-user");
       try {
-        console.log("Active user", activeUser);
+    
           const res  = await api.get("/api/v1/attendance-list/");
           if (activeUser){
             const activeObj = JSON.parse(activeUser);
-            console.log(activeObj)
-            const attendanceList =  res.data.attendanceList.map((el)=> el.classesPerDay).flat((el)=>el);
-           activeObj.attendanceList = attendanceList;
+          //   console.log(activeObj)
+          //   const attendanceList =  res.data.attendanceList.map((el)=> el.classesPerDay).flat((el)=>el);
+          //  activeObj.attendanceList = attendanceList;
            console.log(activeObj,res.data.attendanceList);
 
            localStorage.setItem("active-user", JSON.stringify(activeObj));
