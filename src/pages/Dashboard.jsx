@@ -85,10 +85,13 @@ export default  function Home() {
           const res  = await api.get("/api/v1/attendance-list/");
           if (activeUser){
             const activeObj = JSON.parse(activeUser);
+            console.log(activeObj)
             const attendanceList =  res.data.attendanceList.map((el)=> el.classesPerDay).flatMap((el)=>el);
            activeObj.attendanceList = attendanceList;
+           console.log(activeObj,res.data.attendanceList);
 
            localStorage.setItem("active-user", JSON.stringify(activeObj));
+
            setTimeout(()=>{loadData()},2000)
           }
       } catch (err) {
