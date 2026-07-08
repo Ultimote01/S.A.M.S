@@ -83,15 +83,13 @@ export default  function Home() {
       const activeUser = localStorage.getItem("active-user");
       try {
     
-          const res  = await api.get("/api/v1/attendance-list/");
+          const res  = await api.get("/api/v1/attendance-list");
+
           if (activeUser){
             const activeObj = JSON.parse(activeUser);
-          //   console.log(activeObj)
-          //   const attendanceList =  res.data.attendanceList.map((el)=> el.classesPerDay).flat((el)=>el);
-          //  activeObj.attendanceList = attendanceList;
-           console.log(activeObj,res.data.attendanceList);
-
-           localStorage.setItem("active-user", JSON.stringify(activeObj));
+            const attendanceList =  res.data.attendanceList.map((el)=> el.classes).flatMap((el)=>el);
+            activeObj.attendanceList = attendanceList;
+            localStorage.setItem("active-user", JSON.stringify(activeObj));
 
            setTimeout(()=>{loadData()},2000)
           }
@@ -336,7 +334,11 @@ export default  function Home() {
        
       <Subheading className="mt-14 flex justify-between">
         <span className=' font-semibold text-[1.2rem] sm:pl-3'>Recent Lectures</span>
-        <i disabled={isLoadingX} onClick={()=> getAttendanceList()} className={`sm:mr-2 cursor-pointer ${isLoadingX && 'animate-spin'}`}><ArrowPathIcon className='size-6'/></i></Subheading>
+        <span className='flex items-center border-[1.95px] border-solid   pl-[5px] border-[#C0C0C0] rounded-[4.5px] sm:mr-3'>
+              <span className='text-[0.9rem] mr-1'>Refresh</span>
+              <i disabled={isLoadingX} onClick={()=> getAttendanceList()} className={`mr-1 cursor-pointer ${isLoadingX && 'animate-spin'}`}><ArrowPathIcon className='size-5'/></i>
+        </span>
+         </Subheading>
       <Table className="mt-4 [--gutter:theme(spacing.6)] lg:[--gutter:theme(spacing.10)]">
         <TableHead>
           <TableRow>

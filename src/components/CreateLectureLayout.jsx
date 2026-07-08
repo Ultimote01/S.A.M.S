@@ -174,14 +174,14 @@ function handleInputChange(e) {
             isModifyBackdropDiv={true}
             extraDialogStyle={`p-0 bg-[transparent]`}
             >
-            <div className="flex flex-col  p-6 rounded-[7px]  bg-[var(--form-bg)]">
+            <div className="flex flex-col  p-2 mt-4 rounded-[7px]  bg-[var(--form-bg)]">
                <div className="flex flex-col">
-                <h3 className="flex justify-center mt-3 text-[1.3rem] text-[rgb(238,28,28)]">{errors?.resError}</h3>
-                <form className="mt-8 px-4 lg:px-0" onSubmit={handleSubmit}>
+                <h3 className="flex justify-center mt-2 text-[1.3rem] text-[rgb(238,28,28)]">{errors?.resError}</h3>
+                <form className="mt-1 mx-3 lg:px-0" onSubmit={handleSubmit}>
                 <div className="flex flex-col">
 
                  <div className="flex flex-col mt-[1.5rem]">
-                        <label htmlFor="mode" className="font-semibold  text-[1rem] dark:text-white">Mode</label>
+                        <label htmlFor="mode" className="font-semibold ml-[2px]  text-[1rem] dark:text-white">Mode</label>
                         <div className="flex items-center py-2 pl-2 border-[2.8px] border-solid  bg-white border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600 "> 
                         <UsersIcon className="size-5 mr-2"/>
                           <select  id="mode" className="bg-white w-[100%] dark:bg-zinc-100 "  
