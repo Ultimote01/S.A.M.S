@@ -93,7 +93,7 @@ return(
             <form className="mt-8 px-4 lg:px-0" onSubmit={handleSubmit}>
                 <div className="flex flex-col">
                   <label htmlFor="email" className="font-semibold pl-1 text-[1rem] dark:text-white">Email</label>
-                  <div className="flex items-center bg-white py-1 pl-2 border-[2.8px] border-solid  border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600"> 
+                  <div className="flex items-center bg-white py-2 pl-2 border-[2.8px] border-solid  border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600"> 
                     <EnvelopeIcon fill="white" stroke="black" className="size-5 mr-2 "/>
                       <input className="w-[100%] dark:bg-zinc-100" id="email" type="email" name="email" placeholder="jhondoe@example.com" />
                       </div>
@@ -101,7 +101,7 @@ return(
 
                   <div className="flex flex-col mt-[1.5rem]">
                       <label htmlFor="password" className=" font-semibold pl-1 text-[1rem] dark:text-white">Password</label>
-                        <div className="flex items-center bg-white py-1 pl-2 border-[2.8px] border-solid  border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600">
+                        <div className="flex items-center bg-white py-2 pl-2 border-[2.8px] border-solid  border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600">
                                 <LockClosedIcon stroke="black" className="size-5 mr-2"/>
                                 <input id="password" className="w-[100%] dark:bg-zinc-100"  type={!revealPassword? "password": "text"} name="password"  placeholder="********"      />
                                 {
