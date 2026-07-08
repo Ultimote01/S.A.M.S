@@ -87,7 +87,7 @@ export default  function Home() {
           if (activeUser){
             const activeObj = JSON.parse(activeUser);
             console.log(activeObj)
-            const attendanceList =  res.data.attendanceList.map((el)=> el.classesPerDay).flatMap((el)=>el);
+            const attendanceList =  res.data.attendanceList.map((el)=> el.classesPerDay).flat((el)=>el);
            activeObj.attendanceList = attendanceList;
            console.log(activeObj,res.data.attendanceList);
 
