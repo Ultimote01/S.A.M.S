@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { Dialog } from "../components/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/table';
 import api from "../api/api";
+import { handelLockAndAwakeScreen } from "../utils/screenLockAndAwake";
 
 export default function AttendacePage() {
     const pageLoaded = useRef(false);
@@ -22,6 +23,8 @@ export default function AttendacePage() {
     const navigate = useNavigate();
     
     
+
+ 
  
     
     
@@ -111,7 +114,8 @@ async function  markAttendanceOnlineStudents(activeClass, count) {
                 console.log(res);
                 if (activeClass){
                     const activeClassObj = JSON.parse(activeClass);
-                    const isAdded = activeClassObj.attendanceList.some((el)=>el.createdAt === res.data.concludedClass.createdAt);
+                    const isAdded = activeClassObj.attendanceList.some((el)=>new Date(el.createdAt).toDateString()
+                     === new Date(res.data.concludedClass.createdAt).toDateString());
                     console.log(isAdded);
                     if (!isAdded){
                         activeClassObj.attendanceList.push(res.data.concludedClass);
@@ -133,8 +137,9 @@ async function  markAttendanceOnlineStudents(activeClass, count) {
                 const timeout = setTimeout(function(){
                     const activeUser = localStorage.getItem("active-user");
                     const userData = activeUser? JSON.parse(activeUser).user : null;
-                    recursionWithSetTimeOut(1000,classsEl,userData)
-                    setIsOngoing(timeout)
+                    recursionWithSetTimeOut(1000,classsEl,userData);
+                    handelLockAndAwakeScreen('woke');
+                    setIsOngoing(timeout);
 
                 },new Date(classsEl.startTime).valueOf() -
                 new Date(Date.now()).valueOf());
@@ -156,6 +161,7 @@ async function  markAttendanceOnlineStudents(activeClass, count) {
                  setIsModalOpen(false);
                  setQrCode('');
                  getAttendancePerClass(classsEl.course);
+                 handelLockAndAwakeScreen('normal');
                 },new Date(classsEl.endTime).valueOf() -
                 new Date(Date.now()).valueOf());
                timeOutIDs.push(timeout);

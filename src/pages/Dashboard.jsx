@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowUpRightIcon, UserGroupIcon } from '@heroicons/react/16/solid';
+import { ArrowPathIcon } from "@heroicons/react/20/solid";
 import { CheckCircleIcon, ExclamationCircleIcon, MinusCircleIcon } from '@heroicons/react/24/outline';
 
 import DashboardLayout from '../components/DashboardLayout';
@@ -71,12 +72,30 @@ export default  function Home() {
   const [userObject, setUserObject] = useState(null);
   const [notifications, setNotifications] = useState(userObject?.user?.notifications);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingX,setIsLoadingX] =useState(false);
   const [attendancePerDay, setAttendancePerDay] = useState(null);
   const [registeredStudents, setRegisteredStudents] =useState(0);
   const pageLoaded = useRef(false);
   const navigate = useNavigate();
 
- 
+  async function getAttendanceList () {
+      setIsLoadingX(true);
+      const activeUser = localStorage.getItem("active-user");
+      try {
+          const res  = await api.get("/api/v1/attendance-list/");
+          if (activeUser){
+            const activeObj = JSON.parse(activeUser);
+            const attendanceList =  res.data.attendanceList.map((el)=> el.classesPerDay).flatMap((el)=>el);
+           activeObj.attendanceList = attendanceList;
+
+          //  localStorage.setItem("active-user", JSON.stringify(activeObj));
+          //  setTimeout(()=>{loadData()},2000)
+          }
+      } catch (err) {
+        console.log(err);
+      }
+      setIsLoadingX(false);
+  }
 
   const loadData = function(){
       let activeUser = localStorage.getItem("active-user");
@@ -176,7 +195,6 @@ export default  function Home() {
    
   return (
     <DashboardLayout user={userObject?.user} data={data} 
-      setpageReferenceFunctions={{set:true,name:'loadData',function:loadData}}
     >
       { notifications?.map((notification, index)=> <div key={index} className='bg-[rgb(244,244,245,1)]   hidden gap-x-[2rem] w-[60%]   text-center py-[0.7rem] rounded-lg justify-center ml-[7rem] items-center mt-[-2rem] mb-[1rem] lg:ml-[15rem] lg:mt-[-1rem] lg:w-[50%] lg:flex dark:bg-zinc-800 dark:text-white' >
       {notification?.message}
@@ -280,8 +298,8 @@ export default  function Home() {
               </select>
             </div>
           <CustomActiveShapePieChart attendanceData={[
-              calculateChartData(attendancePerDay,registeredStudents)[0],
-              calculateChartData(attendancePerDay,registeredStudents)[1]
+             isNaN(Math.round(calculateChartData(attendancePerDay,registeredStudents)[0]))? 0:Math.round(calculateChartData(attendancePerDay,registeredStudents)[0]),
+             isNaN(Math.floor(calculateChartData(attendancePerDay,registeredStudents)[1]))? 100:Math.floor(calculateChartData(attendancePerDay,registeredStudents)[1])
           ]}/>
           <div className='flex justify-between items-center px-6 pb-4 text-[0.7em]'>
             <div className='flex items-center'>
@@ -289,7 +307,9 @@ export default  function Home() {
               <span>
                 Present(
                   <span>
-                    {Math.round(calculateChartData(attendancePerDay,registeredStudents)[0])}%
+                    {isNaN(Math.round(calculateChartData(attendancePerDay,registeredStudents)[0]))? 0: 
+                    Math.round(calculateChartData(attendancePerDay,registeredStudents)[0])
+                    }%
                   </span>)
               </span>
             </div>
@@ -298,7 +318,9 @@ export default  function Home() {
                <span>
                 Absent(
                   <span>
-                    {Math.floor(calculateChartData(attendancePerDay,registeredStudents)[1])}%
+                    {isNaN(Math.floor(calculateChartData(attendancePerDay,registeredStudents)[1]))? 100 :
+                    Math.floor(calculateChartData(attendancePerDay,registeredStudents)[1])
+                    }%
                   </span>
                   )
 
@@ -308,7 +330,9 @@ export default  function Home() {
           </div>
       </div>
        
-      <Subheading className="mt-14">Recent Lectures</Subheading>
+      <Subheading className="mt-14 flex justify-between">
+        <span className=' font-semibold text-[1.2rem] sm:pl-3'>Recent Lectures</span>
+        <i disabled={isLoadingX} onClick={()=> getAttendanceList()} className={`sm:mr-2 cursor-pointer ${isLoadingX && 'animate-spin'}`}><ArrowPathIcon className='size-6'/></i></Subheading>
       <Table className="mt-4 [--gutter:theme(spacing.6)] lg:[--gutter:theme(spacing.10)]">
         <TableHead>
           <TableRow>
@@ -353,7 +377,7 @@ export default  function Home() {
                 </TableCell>
               <TableCell className="text-center">
                 <div className='flex justify-end'> 
-                {Array.from({length:getRandomNumber(1,5)}).map((el, index)=><StarIcon key={index} className='size-4'/>)}
+                { !isLoadingX && Array.from({length:getRandomNumber(1,5)}).map((el, index)=><StarIcon key={index} className='size-4'/>)}
                 </div>
                </TableCell>
             </TableRow>
