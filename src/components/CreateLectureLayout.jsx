@@ -44,19 +44,19 @@ async function handleSubmit(e) {
     console.log( {
                 course: course.value,
                 mode: mode.value,
-                startTime: startTimeEl.value,
+                startTime: new Date(startTimeEl.value).toISOString(),
                 createdAt: new Date(Date.now()).toString(),
-                endTime: `${endTimeDate}T${endTimeEl.value}`
+                endTime: new Date(`${endTimeDate}T${endTimeEl.value}`).toISOString()
                 })
     setIsLoading(true);
     try {
             const res = await api.post("/api/v1/lectures/create-lecture",
                 {
-                course: course.value,
+                 course: course.value,
                 mode: mode.value,
-                startTime: startTimeEl.value,
+                startTime: new Date(startTimeEl.value).toISOString(),
                 createdAt: new Date(Date.now()).toString(),
-                endTime: `${endTimeDate}T${endTimeEl.value}`
+                endTime: new Date(`${endTimeDate}T${endTimeEl.value}`).toISOString()
                 }
             );
             setErrors(null);
