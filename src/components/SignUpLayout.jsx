@@ -98,8 +98,8 @@ export function SignUpLayout(){
                     </div>
                     <form className="mt-8 px-4 md:px-0" onSubmit={handleSubmit(submit)} >
                         <div className="flex flex-col">
-                         <div className="flex flex-col justify-between md:flex-row">
-                             <div className="flex flex-col mt-[1.5rem]">
+                         <div className="flex gap-x-2 flex-col md:flex-row">
+                             <div className="flex w-[100%] flex-col mt-[1.5rem]">
                                 <label htmlFor="firstname" className="font-semibold pl-1 text-[1rem] dark:text-white">Firstname</label>
                                 <div className="flex items-center bg-white py-2 pl-2 border-[2.8px] border-solid  border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600"> 
                                 <UserIcon className="size-6 mr-2"/>
@@ -116,7 +116,7 @@ export function SignUpLayout(){
                                  </div>
                                  <span className="text-[0.75rem] text-[rgb(238,28,28)]">{errors.firstname?.message}</span>
                              </div>
-                              <div className="flex flex-col mt-[1.5rem]">
+                              <div className="flex w-[100%] flex-col mt-[1.5rem]">
                                     <label htmlFor="lastname" className="font-semibold pl-1 text-[1rem] dark:text-white">Lastname</label>
                                     <div className="flex items-center bg-white py-2 pl-2 border-[2.8px] border-solid  border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600">
                                     <UserIcon className="size-6 mr-2"/>
@@ -133,8 +133,8 @@ export function SignUpLayout(){
                                      <span className="text-[0.75rem] text-[rgb(238,28,28)]">{errors.lastname?.message}</span>
                                     </div>
                          </div>
-                          <div className="flex flex-col justify-between md:flex-row">
-                            <div className="flex flex-col mt-[1.5rem]">
+                          <div className="flex flex-col gap-x-2 md:flex-row">
+                            <div className="flex w-[100%] flex-col mt-[1.5rem]">
                                  <label htmlFor="email" className="font-semibold pl-1 text-[1rem] dark:text-white">Email</label>
                                  <div className="flex items-center bg-white py-2 pl-2 border-[2.8px] border-solid  border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600"> 
                                 <EnvelopeIcon fill="white" stroke="black" className="size-5 mr-2 "/>
@@ -153,7 +153,7 @@ export function SignUpLayout(){
                                  <span className="text-[0.75rem] text-[rgb(238,28,28)]">{errors.email?.message}</span>
                             </div>
 
-                            <div className="flex flex-col mt-[1.5rem]">
+                            <div className="flex  w-[100%] flex-col mt-[1.5rem]">
                                  <label htmlFor="phone-number" className="font-semibold pl-1 text-[1rem] dark:text-white">Phone Number</label>
                                  <div className="flex items-center bg-white py-2 pl-2 border-[2.8px] border-solid  border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600">
                                   <PhoneIcon className="size-5 mr-2"/>
@@ -176,8 +176,8 @@ export function SignUpLayout(){
                           </div>
 
 
-                        <div className="flex flex-col justify-between md:flex-row">
-                             <div className="flex flex-col mt-[1.5rem]">
+                        <div className="flex flex-col gap-x-2  md:flex-row">
+                             <div className="flex w-[100%] flex-col mt-[1.5rem]">
                                 <label htmlFor="department" className="font-semibold pl-1 text-[1rem] dark:text-white">Department</label>
                                 <div className="flex items-center py-2 pl-2 border-[2.8px] border-solid  bg-white border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600 "> 
                                 <BuildingLibraryIcon className="size-5 mr-2"/>
@@ -196,7 +196,7 @@ export function SignUpLayout(){
                                  </div>
                                   <span className="text-[0.75rem] text-[rgb(238,28,28)]">{errors.department?.message}</span>
                              </div>
-                              <div className="flex flex-col mt-[1.5rem]">
+                              <div className="flex w-[100%] flex-col mt-[1.5rem]">
                                     <label htmlFor="role" className="font-semibold pl-1 text-[1rem] dark:text-white">Role</label>
                                     <div className="flex items-center py-2 pl-2 border-[2.8px] border-solid  bg-white border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600">
                                     <UserPlusIcon className="size-5 mr-2 "/>
@@ -216,8 +216,8 @@ export function SignUpLayout(){
                                     <span className="text-[0.75rem] text-[rgb(238,28,28)]">{errors.role?.message}</span>
                                     </div>
                          </div>
-                         <div className="flex flex-col justify-between md:flex-row">
-                            <div className="flex flex-col mt-[1.5rem]">
+                         <div className="flex flex-col gap-x-2 md:flex-row">
+                            <div className="flex  w-[100%] flex-col mt-[1.5rem]">
                                 <label htmlFor="id" className="font-semibold pl-1 text-[1rem] dark:text-white">Matric/Staff ID</label>
                                 <div className="flex items-center bg-white py-2 pl-2 border-[2.8px] border-solid  border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600"> 
                                 <UserIcon className="size-6 mr-2"/>
@@ -238,19 +238,19 @@ export function SignUpLayout(){
                                  <span className="text-[0.75rem] text-[rgb(238,28,28)]">{errors.id?.message}</span>
                             </div>
 
-                             <div className="flex flex-col mt-[1.5rem]">
+                             <div className="flex w-[100%] flex-col mt-[1.5rem]">
                                 <label htmlFor="courses" className="font-semibold pl-1 text-[1rem] dark:text-white">Courses</label>
-                                <div className="flex items-center  pl-2 border-[2.8px] border-solid  bg-white border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600 md:max-w-[16rem]"> 
+                                <div className="flex items-center py-[3px]  pl-2 border-[2.8px] border-solid  bg-white border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600"> 
                                 <AcademicCapIcon className="size-5 mr-2"/>
-                                   <SelectMultiple id={"courses"} className={'w-[100%] md:w-[15rem]'} handleChange={handleChange} selectedOptions={selectedOptions}/>
+                                   <SelectMultiple id={"courses"} className={'w-[100%]'} handleChange={handleChange} selectedOptions={selectedOptions}/>
                                  </div>
                                   <span className="text-[0.75rem] text-[rgb(238,28,28)]">{errors.courses?.message}</span>
                              </div>
                          </div>
                           
                         
-                          <div className="flex flex-col gap-x-12 justify-between md:flex-row">
-                          <div className="flex flex-col mt-[1.5rem]">
+                          <div className="flex flex-col gap-x-2 md:flex-row">
+                          <div className="flex w-[100%] flex-col mt-[1.5rem]">
                               <label htmlFor="password" className=" font-semibold pl-1 text-[1rem] dark:text-white">Password</label>
                               <div className="flex items-center bg-white py-2 pl-2 border-[2.8px] border-solid  border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600">
                                 <LockClosedIcon stroke="black" className="size-5 mr-2"/>
@@ -276,7 +276,7 @@ export function SignUpLayout(){
                               <span className="text-[0.75rem] text-[rgb(238,28,28)]">{errors.password?.message}</span>
                           </div>
 
-                          <div className="flex flex-col mt-[1.5rem]">
+                          <div className="flex w-[100%] flex-col mt-[1.5rem]">
                               <label htmlFor="confirm-password" className=" font-semibold pl-1 text-[1rem] dark:text-white">Confirm Password</label>
                                 <div className="flex items-center bg-white py-2 pl-2 border-[2.8px] border-solid  border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600" >
                                 <LockClosedIcon stroke="black" className="size-5 mr-2"/>
