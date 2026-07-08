@@ -225,7 +225,7 @@ function handleInputChange(e) {
                         <div className="flex items-center py-1 pl-2 border-[2.8px] border-solid  bg-white border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600 "> 
                             <ClockIcon className="size-5 mr-2"/>
                             <input type="date" className="dark:bg-zinc-100 dark:text-zinc-900"  id='end-date' disabled={true} value={endTimeDate}/>
-                             <input type="time" className="dark:bg-zinc-100 dark:text-zinc-900" id="end-time" onChange={handleInputChange}/>
+                             <input type="time" className="dark:bg-zinc-100 w-[100%] dark:text-zinc-900" id="end-time" onChange={handleInputChange}/>
                         </div>
                         <span className="pl-2 text-[0.75rem] text-[rgb(238,28,28)]">{errors?.endTime}</span>
                 </div>
