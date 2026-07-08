@@ -88,8 +88,8 @@ export default  function Home() {
             const attendanceList =  res.data.attendanceList.map((el)=> el.classesPerDay).flatMap((el)=>el);
            activeObj.attendanceList = attendanceList;
 
-          //  localStorage.setItem("active-user", JSON.stringify(activeObj));
-          //  setTimeout(()=>{loadData()},2000)
+           localStorage.setItem("active-user", JSON.stringify(activeObj));
+           setTimeout(()=>{loadData()},2000)
           }
       } catch (err) {
         console.log(err);
