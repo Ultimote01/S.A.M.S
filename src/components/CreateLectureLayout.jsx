@@ -41,7 +41,13 @@ async function handleSubmit(e) {
 
      
     if (startTimeEl.value === ''|| endTimeEl.value === '' || mode.value === 'Select Mode' || course.value.toLowerCase() === "select a course")return;
-
+    console.log( {
+                course: course.value,
+                mode: mode.value,
+                startTime: startTimeEl.value,
+                createdAt: new Date(Date.now()).toString(),
+                endTime: `${endTimeDate}T${endTimeEl.value}`
+                })
     setIsLoading(true);
     try {
             const res = await api.post("/api/v1/lectures/create-lecture",
