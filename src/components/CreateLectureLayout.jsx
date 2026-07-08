@@ -25,11 +25,10 @@ export default function CreateLectureLayout({isModalOpen, setIsModalOpen, userDa
 function isNotFutureDate(inputDate) {
     
    const dDate = new Date(Date.now()).toLocaleDateString().split('/');
-   const currentDate =  `${dDate[2]}-${dDate[1]}-${dDate[0]}T09:00`;
-   const isNotFutureDate = new Date(inputDate).valueOf() <  new Date(currentDate).valueOf();
-    
-//    return [isNotFutureDate, `${dDate[2]}-${dDate[1]}-${dDate[0]}T09:--`];
-   return false
+//    const openingDate =  `${dDate[2]}-${dDate[1]}-${dDate[0]}T09:00`;
+   const isNotFutureDate = new Date(inputDate).valueOf() <  new Date(Date.now()).valueOf();
+
+   return [isNotFutureDate, `${dDate[2]}-${dDate[1]}-${dDate[0]}T00:--`];
 
 }
 
@@ -58,7 +57,7 @@ async function handleSubmit(e) {
             setLectureList((lectures)=>([...lectures,...res.data.lecture.classes
             ]));
             setIsModalOpen(false);
-            // localStorage.setItem("remoteDataModified", true);
+           
             
     }catch(err){
         setErrors({resError: err.response.data?.message})
@@ -89,38 +88,48 @@ function isTimeValid(e) {
     //     }
     //     }
 
-    // if (e.target.attributes.id.value === 'end-time'){ 
-    //     const startTime = document.getElementById("start-time");
-    //     if (!startTime.value) return [false, "time is invalid "]
-    //     const endTimeInput = new Date(startTime.value.split("T")[0]+"T"+e.target.value).valueOf();
+    if (e.target.attributes.id.value === 'end-time'){ 
+        const startTime = document.getElementById("start-time");
+        if (!startTime.value) return [false, "time is invalid "]
+        // const endTimeInput = new Date(startTime.value.split("T")[0]+"T"+e.target.value).valueOf();
       
-    //      if (endTimeInput > new Date(startTime.value.split("T")[0]+"T"+"15:55").valueOf()){
-    //         return [false, 'time must be 5 minute earlier than closing hour '] ;
-    //     }
+        //  if (endTimeInput > new Date(startTime.value.split("T")[0]+"T"+"15:55").valueOf()){
+        //     return [false, 'time must be 5 minute earlier than closing hour '] ;
+        // }
 
-    //     if (endTimeInput < new Date(startTime.value.split("T")[0]+"T"+"09:01").valueOf()){
-    //        return [false, ' time must be a future date'];
-    //     }
+        // if (endTimeInput < new Date(startTime.value.split("T")[0]+"T"+"09:01").valueOf()){
+        //    return [false, ' time must be a future date'];
+        // }
 
-    //     if (endTimeInput < Date.now()){
-    //        return [false, ' time must be a future date'];
-    //     }
-
-    //     if (startTime.value.split("T")[1].replace(':','') >= e.target.value.replace(':','') ){
-    //         return [false, 'time must  not be equal to startime'];
-    //     }
-    // }
+        // if (endTimeInput < Date.now()){
+        //    return [false, ' time must be a future date'];
+        // }
+       
+        if (new Date(startTime.value).valueOf()+(5 * 60 * 1000) >  new Date(`${endTimeDate}T${e.target.value}`).valueOf() ){
+            return [false, 'time must  be 5 minutes later'];
+        }
+    }
    
     return [true,''];
 }
 
 
 function handleInputChange(e) {
-     const message = {};
-    
+    const message = {};
+    let timeValue = '';
+
      if (!e.target.value) return;
-    if (isNotFutureDate(e.target.value)[0]) {
-        e.target.value = isNotFutureDate(e.target.value)[1];
+
+    if (e.target.attributes.id.value ==='end-time'){
+       timeValue = endTimeDate+"T"+e.target.value
+    }
+    
+    if (e.target.attributes.id.value ==='start-time'){
+       timeValue = e.target.value
+    }
+
+    if (isNotFutureDate(timeValue)[0]) {
+        e.target.value = isNotFutureDate(timeValue)[1];
         const errorProperty = e.target.getAttribute("id").replace("-","").replace("time","Time") ;
         message[errorProperty]=` ${createStringTitle(errorProperty.replace("Time", ""))} time must be a future date`;
         if (e.target.attributes.id.value === 'start-time'){ 
@@ -137,7 +146,7 @@ function handleInputChange(e) {
             setEndTimeDate('');
         }
         setErrors(message);
-        e.target.value = isNotFutureDate(e.target.value)[1];
+        e.target.value = isNotFutureDate(timeValue)[1];
         return;
     }
     else{
