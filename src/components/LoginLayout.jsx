@@ -52,6 +52,7 @@ async function handleSubmit(e) {
 
       if (res.data.status === "fail") {
         setErrorMessage("Please provide a valid email and password");
+        setIsLoading(false);
         return;
       }
         localStorage.setItem("active-user", JSON.stringify(res.data));
@@ -66,7 +67,6 @@ async function handleSubmit(e) {
     }
     
   }
-
   else if  (!regexEmail || !password) {
       setErrorMessage("Please provide a valid email and password")
   }
