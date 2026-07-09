@@ -181,12 +181,13 @@ async function  markAttendanceOnlineStudents(activeClass, count) {
                 handleTimeOutStartTime(res.data.lectures.map((lecture)=>lecture.classesPerDay).flatMap((classPerDay)=> classPerDay));
                 handleTimeOutEndTime(res.data.lectures.map((lecture)=>lecture.classesPerDay).flatMap((classPerDay)=> classPerDay));
         }catch(err) {
-          if (!err?.response?.data.message) return;
-            if (err.response.data.message.includes("User not found") ||
-            err.response.data.message.includes("Session expired") ){
-              localStorage.removeItem("active-user");
-              return navigate('/', true)
-            }
+            setIsLoading(false);
+            if (!err?.response?.data.message) return;
+                if (err.response.data.message.includes("User not found") ||
+                err.response.data.message.includes("Session expired") ){
+                localStorage.removeItem("active-user");
+                return navigate('/', true)
+                }
         }
         setIsLoading(false);
     }

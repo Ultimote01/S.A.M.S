@@ -53,7 +53,7 @@ export default function SettingsPage() {
                 setresMessage([res.data.message,2]);
                 reset();
         } catch(err) {
-            console.log(err.response.data.message);
+            setIsLoading([false,0]);
             setresMessage([err.response.data.message,2]);
         }
         setIsLoading([false,0]);
@@ -79,6 +79,7 @@ export default function SettingsPage() {
           
             setresMessage([res.data.message,1]);
         } catch(err) {
+                setIsLoading([false,0]);
                 setresMessage([err.response.data.message,1]);
         }
         setIsLoading([false,0])

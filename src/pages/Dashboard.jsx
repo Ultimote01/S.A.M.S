@@ -94,6 +94,7 @@ export default  function Home() {
            setTimeout(()=>{loadData()},2000)
           }
       } catch (err) {
+        setIsLoadingX(false);
         console.log(err);
       }
       setIsLoadingX(false);

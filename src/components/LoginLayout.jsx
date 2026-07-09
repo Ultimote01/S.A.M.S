@@ -60,6 +60,7 @@ async function handleSubmit(e) {
           navigate("/dashboard", true);
         },2000)
     } catch(err) {
+      setIsLoading(false);
       setErrorMessage(err.response?.data?.message)
       
     }

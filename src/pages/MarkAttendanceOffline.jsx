@@ -27,13 +27,13 @@ export default function MarkAttendanceOffline() {
                 answer,
                 id
              })
-             console.log(res.data)
              
             setResError('');
             setResMessage(res.data.message);
              
         } catch(err){
-            console.log(err);
+            setIsLoading(false);
+           
             setResMessage('');
             setResError(err.response?.data?.message)
         }
