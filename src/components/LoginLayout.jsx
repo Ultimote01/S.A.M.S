@@ -51,7 +51,7 @@ async function handleSubmit(e) {
       });
 
       if (res.data.status === "fail") {
-         setIsLoading(false);
+        setIsLoading(false);
         setErrorMessage("Please provide a valid email and password");
         return;
       }

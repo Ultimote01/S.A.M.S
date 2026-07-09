@@ -33,8 +33,7 @@ async function getLecturesRemote() {
         }
       
     }catch(err) {
-         setIsLoading(false);         
- }
+         setIsLoading(false);  
          if (!err?.response?.data.message) return;
          
             if (err.response.data.message.includes("User not found") ||
