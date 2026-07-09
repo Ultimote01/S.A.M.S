@@ -118,10 +118,15 @@ function isTimeValid(e) {
 function handleInputChange(e) {
     const message = {};
     let timeValue = '';
+    
+     if (e.target.attributes.id.value ==='end-time'){
+        e.target.style.width= '100%';
+     }
 
      if (!e.target.value) return;
 
     if (e.target.attributes.id.value ==='end-time'){
+        if (e.target.value)e.target.style.width = 'inherit';
        timeValue = endTimeDate+"T"+e.target.value
     }
     
@@ -137,6 +142,9 @@ function handleInputChange(e) {
             setEndTimeDate('');
         }
         setErrors(message);
+        if (e.target.attributes.id.value ==='end-time' && !e.target.value){
+            e.target.style.width= '100%';
+        }
         return;
 
     }
@@ -148,6 +156,9 @@ function handleInputChange(e) {
         }
         setErrors(message);
         e.target.value = isNotFutureDate(timeValue)[1];
+         if (e.target.attributes.id.value ==='end-time' && !e.target.value){
+            e.target.style.width= '100%';
+        }
         return;
     }
     else{

@@ -55,11 +55,14 @@ async function handleSubmit(e) {
         setErrorMessage("Please provide a valid email and password");
         return;
       }
+
         localStorage.setItem("active-user", JSON.stringify(res.data));
         localStorage.setItem("previous-page", "login")
+
         setTimeout(()=>{
           navigate("/dashboard", true);
         },2000)
+        
     } catch(err) {
       setIsLoading(false);
       setErrorMessage(err.response?.data?.message)
