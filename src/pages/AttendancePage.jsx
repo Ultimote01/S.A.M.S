@@ -176,7 +176,7 @@ async function  markAttendanceOnlineStudents(activeClass, count) {
     async function  getClassesRemote() {
 
         try {   
-                 const res = await api.get(`/api/v1/lectures/get-lectures/?day=today`); 
+                 const res = await api.get(`/api/v1/lectures/get-upcomingLectures/?day=today`); 
                 SetTodayClasses(res.data.lectures.map((lecture)=>lecture.classesPerDay).flatMap((classPerDay)=> classPerDay));
                 handleTimeOutStartTime(res.data.lectures.map((lecture)=>lecture.classesPerDay).flatMap((classPerDay)=> classPerDay));
                 handleTimeOutEndTime(res.data.lectures.map((lecture)=>lecture.classesPerDay).flatMap((classPerDay)=> classPerDay));

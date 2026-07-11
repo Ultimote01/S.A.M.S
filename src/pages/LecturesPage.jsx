@@ -25,7 +25,7 @@ export default function LecturesPage() {
 async function getLecturesRemote() {
     const data = JSON.parse(localStorage.getItem("active-user"));
     try {    
-        const res = await api.get('/api/v1/lectures/get-lectures'); 
+        const res = await api.get('/api/v1/lectures/get-upcomingLectures'); 
         if (res.data.lectures.length > 0) {
             setLectureList(res.data.lectures.map((lecture)=>lecture.classesPerDay).flatMap((classPerDay)=> classPerDay));
         }else{
