@@ -49,7 +49,7 @@ async function handleSubmit(e) {
                  course: course.value,
                 mode: mode.value,
                 startTime: new Date(startTimeEl.value).toISOString(),
-                createdAt: new Date(Date.now()).toString(),
+                createdAt: Date.now() + (1 * 60 * 1000),
                 endTime: new Date(`${endTimeDate}T${endTimeEl.value}`).toISOString()
                 }
             );

@@ -129,6 +129,12 @@ async function getLecturesRemote() {
                     <TableCell>
                         {new Date(lecture.endTime).toLocaleTimeString()}
                     </TableCell>
+                    <TableCell>
+                       <i>
+                        <span>Edit</span>
+                        <span>Delete</span>
+                       </i>
+                    </TableCell>
                 </TableRow>)}
             </TableBody>
         </Table>

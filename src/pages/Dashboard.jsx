@@ -156,8 +156,7 @@ export default  function Home() {
 
  
     
-    if (userObject === null) return;
-    if (!data[0]) return;
+     
 
     
   
@@ -193,7 +192,8 @@ export default  function Home() {
   }
   
  
-  
+  if (userObject === null) return;
+
    
   return (
     <DashboardLayout user={userObject?.user} data={data} 
