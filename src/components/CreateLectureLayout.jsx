@@ -187,7 +187,7 @@ function handleInputChange(e) {
             >
             <div className="flex flex-col  p-2 mt-4 rounded-[7px]  bg-[var(--form-bg)]">
                <div className="flex flex-col">
-                <h3 className="flex justify-center mt-2 text-[1.3rem] text-[rgb(238,28,28)]">{errors?.resError}</h3>
+                <h3 className="flex justify-center text-center px-2 mt-2 text-[1.3rem] text-[rgb(238,28,28)]">{errors?.resError}</h3>
                 <form className="mt-1 mx-3 lg:px-0" onSubmit={handleSubmit}>
                 <div className="flex flex-col">
 
