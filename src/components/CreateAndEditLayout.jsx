@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dialog } from "../components/dialog";
 import { UsersIcon } from "@heroicons/react/24/solid";
 import { AcademicCapIcon, ClockIcon} from "@heroicons/react/24/outline";
@@ -14,13 +14,87 @@ import { createStringTitle } from "../utils/helperFn";
 
 
 
-export default function CreateLectureLayout({isModalOpen, setIsModalOpen, userData,setLectureList}) {
+export default function CreateAndEditLayout({isModalOpen, setIsModalOpen, userData,setLectureList,edit=false,editValues=null}) {
     const [isLoading, setIsLoading] =useState(false);
     const [errors, setErrors] = useState(null);
     const [endTimeDate, setEndTimeDate] = useState('');
+    const [course, setCourse] = useState('');
+    const [startDate, setStarttDate] = useState('');
+    const [startTime, setStartTime] = useState('');
+    const [endTime, setEndTime] = useState('');
+    const [mode , setMode] = useState('');
     const courses = ['Select a course'].concat(userData.courses.map((course)=>course))
 
 
+useEffect(()=>{
+    const ck=()=>{
+        setStartTime(editValues.startTime);
+        setStarttDate(editValues.startDate);
+        setEndTime(editValues.endTime);
+        setCourse(editValues.course);
+        setMode(editValues.mode);
+    }
+ 
+    if (edit) ck();
+},[])
+
+async function handleSummitEditLecture(data) {
+    if (!editValues) return;
+    const payload = {}
+    Object.keys(data).forEach((el)=> {
+             
+        if (editValues[el] !== data[el]){
+           
+            if (el === 'startTime') {
+                 payload['startTime']= `${data['startDate']}T${data['startTime']}Z`;
+                 return 
+            }
+            if (el === 'endTime') {
+                payload.endTime = `${data['startDate']}T${data['endTime']}Z`;
+                return;
+            }  
+            payload[el] = data[el];
+        }
+             
+            
+      })
+   
+    if (Object.values(payload).length === 0) return;
+    
+    setIsLoading(true);
+    payload._id = editValues._id;
+    payload.lecturer = editValues.lecturer;
+    payload.modifiedLectureStartTime = editValues.modifiedLectureStartTime;
+    payload.modifiedAt = new Date( Date.now()).toISOString();
+
+   
+    try {
+        setErrors(null);
+        const res = await api.patch("/api/v1/lectures/edit-lecture",
+            payload
+        );
+
+        
+        setIsModalOpen(false);
+        setLectureList((lecture)=>{
+            return lecture.map((el, index)=> {
+                if (index === editValues.index){ 
+                    return res.data.updatedLecture;
+                }
+                return el;
+            })
+        })
+        
+    } catch(err) {
+      
+
+        setErrors({resError: err?.response?.data?.message})
+        
+        setIsLoading(false);
+    }
+    setIsLoading(false);
+     
+}
 
 function isNotFutureDate(inputDate) {
     
@@ -42,7 +116,15 @@ async function handleSubmit(e) {
      
     if (startTimeEl.value === ''|| endTimeEl.value === '' || mode.value === 'Select Mode' || course.value.toLowerCase() === "select a course")return;
      
-    //hhfhhf
+    if (edit) return handleSummitEditLecture({
+        startDate: startTimeEl?.value.split('T')[0],
+        endTime: endTimeEl?.value+":00",
+        mode: mode?.value,
+        course: course?.value,
+        startTime: startTimeEl?.value.split('T')[1]+':00'
+
+    });
+
     setIsLoading(true);
     try {
             const res = await api.post("/api/v1/lectures/create-lecture",
@@ -50,7 +132,7 @@ async function handleSubmit(e) {
                  course: course.value,
                 mode: mode.value,
                 startTime: new Date(startTimeEl.value).toISOString(),
-                createdAt: Date.now(),
+                createdAt: new Date(Date.now()).toISOString(),
                 endTime: new Date(`${endTimeDate}T${endTimeEl.value}`).toISOString()
                 }
             );
@@ -61,8 +143,10 @@ async function handleSubmit(e) {
            
             
     }catch(err){
-        setIsLoading(false);
+      
         setErrors({resError: err.response.data?.message})
+        
+        setIsLoading(false);
     }
     setIsLoading(false);
 } 
@@ -108,7 +192,7 @@ function isTimeValid(e) {
         // }
        
         if (new Date(startTime.value).valueOf()+(5 * 60 * 1000) >  new Date(`${endTimeDate}T${e.target.value}`).valueOf() ){
-            return [false, 'time must  be 5 minutes later'];
+            return [false, 'time must  be  atleast 5 minutes later after start time'];
         }
     }
    
@@ -123,19 +207,27 @@ function handleInputChange(e) {
     
      if (e.target.attributes.id.value ==='end-time'){
         e.target.style.width= '100%';
-        document.getElementById('date-time-sep').style.display='none'
+        if (e.target.value) document.getElementById("date-time-sep").style.display= 'block';
+        if (!e.target.value) document.getElementById("date-time-sep").style.display= 'none';
+        
+        
      }
 
      if (!e.target.value) return;
 
     if (e.target.attributes.id.value ==='end-time'){
         if (e.target.value)e.target.style.width = 'inherit';
-        document.getElementById('date-time-sep').style.display='block'
-       timeValue = endTimeDate+"T"+e.target.value
+        timeValue = endTimeDate+"T"+e.target.value;
+        if (edit)setEndTime( e.target.value+":00");
     }
     
     if (e.target.attributes.id.value ==='start-time'){
        timeValue = e.target.value
+       if (edit){
+        setStartTime( e.target.value.split('T')[1]);
+        setStarttDate( e.target.value.split('T')[0]);
+       }
+       
     }
 
     if (isNotFutureDate(timeValue)[0]) {
@@ -179,16 +271,16 @@ function handleInputChange(e) {
     
         
     }
-
-
+     
     return(
          <Dialog  open={isModalOpen} onClose={()=> {}}
             isModifyBackdropDiv={true}
             extraDialogStyle={`p-0 bg-[transparent]`}
             >
-            <div className="flex flex-col  p-2 mt-4 rounded-[7px]  bg-[var(--form-bg)]">
+            <div className="flex flex-col  p-2 rounded-[7px]  bg-[var(--form-bg)]">
                <div className="flex flex-col">
-                <h3 className="flex justify-center text-center px-2 mt-2 text-[1.3rem] text-[rgb(238,28,28)]">{errors?.resError}</h3>
+                <h1 className="text-center text-[1.8rem]  mt-3 font-semibold text-black dark:text-white">{edit? "Edit": "Create"}</h1>
+                <h3 className="flex justify-center text-center px-2 mt-2 text-[1rem] text-[rgb(238,28,28)]">{errors?.resError}</h3>
                 <form className="mt-1 mx-3 lg:px-0" onSubmit={handleSubmit}>
                 <div className="flex flex-col">
 
@@ -196,26 +288,43 @@ function handleInputChange(e) {
                         <label htmlFor="mode" className="font-semibold ml-[2px]  text-[1rem] dark:text-white">Mode</label>
                         <div className="flex items-center py-2 pl-2 border-[2.8px] border-solid  bg-white border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600 "> 
                         <UsersIcon className="size-5 mr-2"/>
-                          <select  id="mode" className="bg-white w-[100%] dark:bg-zinc-100 "  
+                          {mode && <select defaultValue={mode}  id="mode" className="bg-white w-[100%] dark:bg-zinc-100 "  
                             name="mode" 
                             >
                             <option >Select Mode</option>
                             <option>Physical</option>
                             <option>Online</option>
-                            </select>
+                            </select>}
+
+                            {!mode &&  <select  id="mode" className="bg-white w-[100%] dark:bg-zinc-100 "  
+                            name="mode" 
+                            >
+                            <option >Select Mode</option>
+                            <option>Physical</option>
+                            <option>Online</option>
+                            </select>}
                             </div>
                             <span className="text-[0.75rem] text-[rgb(238,28,28)]">{errors?.mode}</span>
                 </div>
 
                 <div className="flex flex-col mt-[1.5rem]">
                          <label htmlFor="course" className="font-semibold  text-[1rem] dark:text-white">Courses</label>
+                          <h6 className="text-[0.75rem]" >You can only create a non existing  course lecture </h6> 
                         <div className="flex items-center py-2 pl-2 border-[2.8px] border-solid  bg-white border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600 "> 
                             <AcademicCapIcon className="size-5 mr-2"/>
-                            <select id={'course'}  className='w-[100%] bg-white  dark:bg-zinc-100'>
+                            {course && <select  defaultValue={course} id={'course'}  className='w-[100%] bg-white  dark:bg-zinc-100'>
                                 {courses.map((course, index)=><option key={index}>
                                     {course}
                                 </option> )}
-                            </select>
+                                </select>
+                            }
+
+                            { !course && <select  id={'course'}  className='w-[100%] bg-white  dark:bg-zinc-100'>
+                                {courses.map((course, index)=><option key={index}>
+                                    {course}
+                                </option> )}
+                            </select>}
+                             
                         </div>
                         <span className=" pl-2 text-[0.75rem] text-[rgb(238,28,28)]">{errors?.courses?.message}</span>
                 </div>
@@ -225,8 +334,14 @@ function handleInputChange(e) {
                             <h6 className="text-[0.75rem]" >Time is set in 24 hours format "09:00 - 16:01"</h6> 
                         <div className="flex items-center py-1 pl-2 border-[2.8px] border-solid  bg-white border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600 ">
                             <ClockIcon className="size-5 mr-2"/>
-                             <input  className="dark:bg-zinc-100 dark:text-zinc-900" type="datetime-local" id="start-time" 
-                             onChange={handleInputChange}/>
+                            {
+                                startTime &&  <input  value={ `${startDate}T${startTime}`} className="dark:bg-zinc-100 dark:text-zinc-900" type="datetime-local" id="start-time" 
+                                onChange={handleInputChange}/> }
+                            {
+                              !startTime && <input className="dark:bg-zinc-100 dark:text-zinc-900" type="datetime-local" id="start-time" onChange={handleInputChange}/>
+                            }
+                            
+                             
                         </div>
                         <span className="pl-2 text-[0.75rem] text-[rgb(238,28,28)]">{errors?.startTime}</span>
                 </div>
@@ -236,9 +351,14 @@ function handleInputChange(e) {
                             <h6 className="text-[0.75rem]" >Time is set in 24 hours format "09:00 - 16:01"</h6> 
                         <div className="flex items-center py-1 pl-2 border-[2.8px] border-solid  bg-white border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600 "> 
                             <ClockIcon className="size-5 mr-2"/>
-                            <input type="date" className="dark:bg-zinc-100 dark:text-zinc-900"  id='end-date' disabled={true} value={endTimeDate}/>
-                            <span id="date-time-sep" className="pr-1 pl-1 hidden">@</span>
-                             <input type="time" className="dark:bg-zinc-100 w-[100%] dark:text-zinc-900" id="end-time" onChange={handleInputChange}/>
+                            <input  type="date" className="dark:bg-zinc-100 dark:text-zinc-900"  id='end-date' disabled={true} value={startDate? `${startDate}`:endTimeDate}/>
+                            <span id="date-time-sep" className="pr-1 pl-1 hidden">{'@'}</span>
+                            {endTime &&
+                             <input type="time" className="dark:bg-zinc-100 w-[100%] dark:text-zinc-900" id="end-time" value={ `${endTime.slice(0,-3)}`} onChange={handleInputChange}/>
+                            }
+                            { !endTime &&
+                                <input type="time" className="dark:bg-zinc-100 w-[100%] dark:text-zinc-900" id="end-time" onChange={handleInputChange}/>
+                            }
                         </div>
                         <span className="pl-2 text-[0.75rem] text-[rgb(238,28,28)]">{errors?.endTime}</span>
                 </div>
@@ -246,7 +366,7 @@ function handleInputChange(e) {
 
                   <div className="flex gap-x-6  mt-12 mb-6 lg:justify-center">
                       <button className=" w-[100%] py-2 bg-[rgb(240,238,237)] text-black rounded-md lg:px-10 lg:w-[inherit] dark:bg-[rgb(252,250,247)] " onClick={()=>{setIsModalOpen(false); setErrors({});setEndTimeDate('')}}>{"Cancel"}</button>
-                      <button type="submit" className=" flex justify-center w-[100%] py-2 bg-[var(--accent-bg)] text-[var(--accent)] rounded-md lg:px-10 lg:w-[inherit] ">{ isLoading?<Spinner/>: "Submit"}</button>
+                      <button type="submit" className=" flex justify-center w-[100%] py-2 bg-[var(--accent-bg)] text-[var(--accent)] rounded-md lg:px-10 lg:w-[inherit] ">{ isLoading?<Spinner/>: editValues?.startDate?'Update':'Submit'}</button>
                   </div>
                    
                 </div>

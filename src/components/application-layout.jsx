@@ -153,7 +153,6 @@ export function ApplicationLayout({ children }) {
     try{
       
       await api.get(route);
-    
     /* eslint-disable-next-line */
     } catch(err) {}
     

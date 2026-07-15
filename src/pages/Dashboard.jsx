@@ -78,6 +78,29 @@ export default  function Home() {
   const pageLoaded = useRef(false);
   const navigate = useNavigate();
 
+  async function getStudentAttendanceList()
+{
+   setIsLoadingX(true);
+      const activeUser = localStorage.getItem("active-user");
+      try {
+    
+          const res  = await api.get("/api/v1/attendance-list/getAttendanceBycourses");
+          console.log(res.data.attendanceList)
+          if (activeUser){
+            const activeObj = JSON.parse(activeUser);
+            const attendanceList =  res.data.attendanceList.map((el)=> el.classesPerDay).flatMap((el)=>el);
+            activeObj.attendanceList = attendanceList;
+            activeObj.registeredStudents = res.data?.registeredStudents? res.data.registeredStudents.length: 0
+            localStorage.setItem("active-user", JSON.stringify(activeObj));
+
+           setTimeout(()=>{loadData()},2000)
+          }
+      } catch (err) {
+        setIsLoadingX(false);
+        console.log(err);
+      }
+      setIsLoadingX(false);
+}
   async function getAttendanceList () {
       setIsLoadingX(true);
       const activeUser = localStorage.getItem("active-user");
@@ -89,6 +112,8 @@ export default  function Home() {
             const activeObj = JSON.parse(activeUser);
             const attendanceList =  res.data.attendanceList.map((el)=> el.classes).flatMap((el)=>el);
             activeObj.attendanceList = attendanceList;
+            activeObj.registeredStudents = res.data?.registeredStudents? res.data.registeredStudents.length: 0
+            console.log(attendanceList)
             localStorage.setItem("active-user", JSON.stringify(activeObj));
 
            setTimeout(()=>{loadData()},2000)
@@ -283,11 +308,11 @@ export default  function Home() {
 
       <div className="mt-8 flex  flex-col items-center gap-x-4 gap-y-8  justify-between md:flex-row" >
           <SimpleAreaChart/>
-          <div className={"w-[100%] shadow-sm border-[2px] max-w-[424px] text-black border-solid border-[#C0C0C0] rounded-[4.5px] md:w-[60%] dark:text-white"}> 
+          <div className={"w-[100%] shadow-sm border-[2px] max-w-[424px]text-black border-solid border-[#C0C0C0] rounded-[4.5px] md:w-[60%] dark:text-white"}> 
             <div className='flex mt-2 px-2 justify-between items-center'>
-              <div className='flex items-center text-[0.82em] text-black font-bold dark:text-white'> 
-                <CheckCircleIcon className='size-4'/>
-              <h4>Attendance Summary</h4>
+              <div className='flex items-start mt-1 text-[0.82em] text-black font-bold dark:text-white'> 
+                <CheckCircleIcon className='size-4 mt-1'/>
+               <h4 className='pl-0.5  lg:mt-1 lg:text-[1rem]'>Students Attendance Summary</h4>
               </div>
               <select className='py-1 px-2 text-black rounded-[2px] text-[0.75em] font-semibold dark:text-white'
               onChange={(e)=>{
@@ -299,10 +324,12 @@ export default  function Home() {
                 <option value={3}> 3 Days</option>
               </select>
             </div>
-          <CustomActiveShapePieChart attendanceData={[
+            
+            <CustomActiveShapePieChart attendanceData={[
              isNaN(Math.round(calculateChartData(attendancePerDay,registeredStudents)[0]))? 0:Math.round(calculateChartData(attendancePerDay,registeredStudents)[0]),
              isNaN(Math.floor(calculateChartData(attendancePerDay,registeredStudents)[1]))? 100:Math.floor(calculateChartData(attendancePerDay,registeredStudents)[1])
           ]}/>
+           
           <div className='flex justify-between items-center px-6 pb-4 text-[0.7em]'>
             <div className='flex items-center'>
               <i className='px-1 h-[10px] block mr-1 bg-[#008000]'></i>
@@ -336,7 +363,12 @@ export default  function Home() {
         <span className=' font-semibold text-[1.2rem] sm:pl-3'>Recent Lectures</span>
         <span className='flex items-center border-[1.95px] border-solid   pl-[5px] border-[#C0C0C0] rounded-[4.5px] sm:mr-3'>
               <span className='text-[0.9rem] mr-1'>Refresh</span>
-              <i disabled={isLoadingX} onClick={()=> getAttendanceList()} className={`mr-1 cursor-pointer ${isLoadingX && 'animate-spin'}`}><ArrowPathIcon className='size-5'/></i>
+              <i disabled={isLoadingX} onClick={()=>
+              { 
+                if (userObject.role === "lecturer") getAttendanceList();
+                if (userObject.role === "student") getStudentAttendanceList();
+              }
+              } className={`mr-1 cursor-pointer ${isLoadingX && 'animate-spin'}`}><ArrowPathIcon className='size-5'/></i>
         </span>
          </Subheading>
       <Table className="mt-4 [--gutter:theme(spacing.6)] lg:[--gutter:theme(spacing.10)]">

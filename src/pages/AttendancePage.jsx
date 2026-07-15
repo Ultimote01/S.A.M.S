@@ -59,7 +59,7 @@ function recursionWithSetTimeOut(timeOut, activeClass,userData,resolve=false) {
 async function  markAttendanceOnlineStudents(activeClass, count) {
     try {
             // eslint-disable-next-line
-            const res = await api.post('/api/v1/attendance-list/create-attendance',
+            const res = await api.post('/api/v1/attendance-list/mark-attendance-online',
                 {
                     course: activeClass.course
                 }
@@ -272,6 +272,7 @@ async function  markAttendanceOnlineStudents(activeClass, count) {
                                         >Date</TableHeader>
                                         <TableHeader className={" border-r-2 bg-stone-400 font-medium text-white dark:bg-zinc-700 "}>Course</TableHeader>
                                         <TableHeader className={" border-r-2  bg-stone-400 font-medium  text-white dark:bg-zinc-700"}>Lecturer</TableHeader>
+                                         <TableHeader className={" border-r-2  bg-stone-400 font-medium  text-white dark:bg-zinc-700"}>Mode</TableHeader>
                                         <TableHeader className={" border-r-2  bg-stone-400 font-medium  text-white dark:bg-zinc-700"}>Start Time</TableHeader>
                                         <TableHeader className={" border-r-2  bg-stone-400 font-medium  text-white dark:bg-zinc-700"}>Status</TableHeader>
                                         <TableHeader 
@@ -292,6 +293,9 @@ async function  markAttendanceOnlineStudents(activeClass, count) {
                             </TableCell>
                             <TableCell>
                                 {lecture.lecturer}
+                            </TableCell>
+                             <TableCell>
+                                {lecture.mode}
                             </TableCell>
                             <TableCell>
                                 {new Date(lecture.startTime).toLocaleTimeString()}

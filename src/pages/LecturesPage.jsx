@@ -5,10 +5,12 @@ import LecturesPageLayout from "../components/LecturesLayout";
 import { Table, TableBody, TableCell,  TableHead,  TableHeader,  TableRow } from '../components/table';
 import { Heading} from '../components/heading';
 import api from "../api/api";
-import CreateLectureLayout from "../components/CreateLectureLayout";
+import CreatureLecture from "../components/CreateLecture";
 import { ArrowPathIcon, CalendarDaysIcon } from "@heroicons/react/20/solid";
 import { ClockIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
+import EditLecture from "../components/EditLecture";
+import DeleteLecture from "../components/DeleteLecture";
  
 
 
@@ -16,9 +18,12 @@ export default function LecturesPage() {
     const pageLoaded = useRef(false);
     const [lectureList, setLectureList] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen1, setIsModalOpen1] = useState(false);
+    const [isModalOpen2, setIsModalOpen2] = useState(false);
     const [userData, setUserData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isLiveSession, setIsLiveSession] = useState(false);
+    const [lectureIndex, setLectureIndex] = useState([]);
     const navigate = useNavigate()
 
  
@@ -92,31 +97,42 @@ async function getLecturesRemote() {
         }
          
 
-        {  isModalOpen &&
-        <CreateLectureLayout userData={userData?.user} setLectureList={setLectureList} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>}
-        <Table  className="mt-4  border-[1px] border-solid [--gutter:theme(spacing.6)] lg:[--gutter:theme(spacing.10)]">
+        { isModalOpen &&
+        <CreatureLecture userData={userData?.user} setLectureList={setLectureList} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>}
+        {isModalOpen1 && 
+         <EditLecture userData={userData?.user} setLectureList={setLectureList} isModalOpen={isModalOpen1} setIsModalOpen={setIsModalOpen1} lectureIndex={lectureIndex} />
+        }
+        {isModalOpen2 &&
+            <DeleteLecture setLectureList={setLectureList} isModalOpen={isModalOpen2} setIsModalOpen={setIsModalOpen2} lectureIndex={lectureIndex} />
+        }
+        <Table className="mt-4  border-[1px] border-solid [--gutter:theme(spacing.6)] lg:[--gutter:theme(spacing.10)]">
             <TableHead>
                 <TableRow>
                     <TableHeader className={"font-medium  border-r-[3px] border-solid text-[0.95rem] text-black dark:text-white"}>Date</TableHeader>
                     <TableHeader className={"font-medium   border-r-[3px] border-solid text-[0.95rem] text-black dark:text-white"}>Course</TableHeader>
                     <TableHeader className={"font-medium  border-r-[3px] border-solid text-black text-[0.95rem] dark:text-white"}>Lecturer</TableHeader>
+                    <TableHeader className={"font-medium  border-r-[3px] border-solid text-black text-[0.95rem] dark:text-white"}>Mode</TableHeader>
                     <TableHeader className={"font-medium  border-r-[3px] border-solid text-black text-[0.95rem] dark:text-white"}>Start Time</TableHeader>
                     <TableHeader className={"font-medium  border-r-[3px] border-solid text-black text-[0.95rem] dark:text-white"}>Status</TableHeader>
-                    <TableHeader className={"font-medium  text-black text-[0.95rem] dark:text-white"}>End time</TableHeader>
+                    <TableHeader className={"font-medium  border-r-[3px] border-solid text-black text-[0.95rem] dark:text-white"}>End time</TableHeader>
+                    <TableHeader className={"font-medium  text-black text-[0.95rem] dark:text-white"}>Edit / Delete</TableHeader>
                     </TableRow>
                 </TableHead>
             <TableBody>
-                {lectureList !== null && lectureList.map((lecture,index)=> <TableRow key={index}>
-                    <TableCell className={'border-r-[2px] border-dash dark:border-r-[4px]'}>
+                {lectureList !== null && lectureList.map((lecture,index)=> <TableRow  key={index}>
+                    <TableCell id={`${index}-lecture-startDate`} className={'border-r-[2px] border-dash dark:border-r-[4px]'}>
                         {new Date(lecture.startTime).toLocaleDateString()}
                     </TableCell>
-                    <TableCell className={'border-r-[2px] border-dash dark:border-r-[4px]'}>
+                    <TableCell id={`${index}-lecture-course`} className={'border-r-[2px] border-dash dark:border-r-[4px]'}>
                         {lecture.course}
                     </TableCell>
-                    <TableCell className={'border-r-[2px] border-dash dark:border-r-[4px]'}>
+                    <TableCell id={`${index}-lecture-lecturer`} className={'border-r-[2px] border-dash dark:border-r-[4px]'}>
                         {lecture.lecturer}
                     </TableCell>
-                    <TableCell className={'border-r-[2px] border-dash dark:border-r-[4px]'}>
+                     <TableCell id={`${index}-lecture-mode`} className={'border-r-[2px] border-dash dark:border-r-[4px]'}>
+                        {lecture.mode}
+                    </TableCell>
+                    <TableCell id={`${index}-lecture-startTime`} className={'border-r-[2px] border-dash dark:border-r-[4px]'}>
                         {new Date(lecture.startTime).toLocaleTimeString()}
                     </TableCell>
                     <TableCell className={'border-r-[2px] border-dash dark:border-r-[4px]'}>{
@@ -126,14 +142,14 @@ async function getLecturesRemote() {
                         </div>
                         }
                     </TableCell>
-                    <TableCell>
+                    <TableCell className={'border-r-[2px] border-dash dark:border-r-[4px]'} id={`${index}-lecture-endTime`}>
                         {new Date(lecture.endTime).toLocaleTimeString()}
                     </TableCell>
                     <TableCell>
-                       <i>
-                        <span>Edit</span>
-                        <span>Delete</span>
-                       </i>
+                       <span className="flex gap-x-2">
+                        <h6 className=" cursor-pointer text-white bg-blue-700  text-[0.8rem] px-3 border-[1px] border-solid  border-stone-200 rounded-[5px] dark:bg-blue-800" id={`${index}-lecture-edit`} onClick={()=>{setIsModalOpen1(true); setLectureIndex([index, lecture._id])}}>Edit</h6>
+                        <h6 className="cursor-pointer text-white  bg-red-500 text-[0.8rem] px-2 border-[1px] border-solid border-stone-200 rounded-[5px] dark:bg-red-700" id={`${index}lecture-delete`} onClick={()=>{setIsModalOpen2(true); setLectureIndex([index, lecture._id])}}>Delete</h6>
+                       </span> 
                     </TableCell>
                 </TableRow>)}
             </TableBody>
