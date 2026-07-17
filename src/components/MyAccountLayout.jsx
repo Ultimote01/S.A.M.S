@@ -16,7 +16,7 @@ export default function MyAccountLayout({user}) {
                            <div className="flex flex-col text-center">
                                 <label htmlFor="my-fullName" className="font-semibold text-[1.9rem] dark:bg-[rgba(0, 0, 0, 0)] dark:text-white ">{`${createStringTitle(user.fullName.split(' ')[0])} ${createStringTitle(user.fullName.split(' ')[1])}`}</label>
                                 <div className="flex items-center mt-4 justify-center"> 
-                                <input disabled={true} className=" mr-2 text-center w-[40%] dark:bg-[rgba(0, 0, 0, 0)]" id="my-fullname" name="my-fullname" value={`@${user.fullName.replace(" ","")}`}/>
+                                <input disabled={true} className=" mr-2 text-center w-[60%] dark:bg-[rgba(0, 0, 0, 0)]" id="my-fullname" name="my-fullname" value={`@${user.fullName.replace(" ","")}`}/>
                                    <PencilIcon className="size-4"/>
                                 </div>
                            </div>
@@ -77,13 +77,13 @@ export default function MyAccountLayout({user}) {
                                 <label htmlFor="courses" className="font-semibold text-[1rem] dark:text-white">Courses</label>
                                 <div className="flex items-center   text-[1rem] ">
                                 
-                                <select className="mr-2 w-[100%] bg-[inherit] text-[0.95rem]" id="courses"type="text" name="courses" 
+                                <select className="mr-2 py-1 w-[100%] px-0.5 bg-stone-50  border-[1px] border-solid  border-zinc-200  rounded-[5px]  text-[0.89rem] dark:bg-stone-900" id="courses"type="text" name="courses" 
                                 >
-                                    {user?.courses && user.courses.map((course)=><option>
+                                    {user?.courses && user.courses.map((course,index)=><option key={index}>
                                         {course}
                                     </option>)}
                                 </select>
-                                  {/* <PencilIcon className="size-6"/> */}
+                                
                                 </div>
                                    
                             </div>
