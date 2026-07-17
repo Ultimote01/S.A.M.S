@@ -112,8 +112,7 @@ export default  function Home() {
             const activeObj = JSON.parse(activeUser);
             const attendanceList =  res.data.attendanceList.map((el)=> el.classes).flatMap((el)=>el);
             activeObj.attendanceList = attendanceList;
-            activeObj.registeredStudents = res.data?.registeredStudents? res.data.registeredStudents.length: 0
-            console.log(attendanceList)
+            activeObj.registeredStudents = res.data?.registeredStudents? res.data.registeredStudents.length: 
             localStorage.setItem("active-user", JSON.stringify(activeObj));
 
            setTimeout(()=>{loadData()},2000)
