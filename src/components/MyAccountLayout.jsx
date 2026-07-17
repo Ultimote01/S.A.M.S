@@ -29,9 +29,9 @@ export default function MyAccountLayout({user}) {
                         <div className="flex gap-x-2   flex-col">
                             <div className="flex w-[100%]  gap-x-[20%] items-center">
                             <label htmlFor="username" className="font-semibold text-[1rem] dark:text-white">Username</label>
-                            <div className="flex items-center  dark:bg-[rgba(0, 0, 0, 0)]"> 
+                            <div className="flex items-center "> 
                             
-                                <input  className="mr-2 w-[100%] bg-[inherit]" id="username" type="text" name="username" 
+                                <input  disabled={true} className="mr-2 w-[100%] bg-[inherit]" id="username" type="text" name="username" 
                                     value={`@${user.fullName.replace(" ","")}`}
                             />
                             <PencilIcon className="size-6"/>
@@ -53,7 +53,7 @@ export default function MyAccountLayout({user}) {
                                 <label htmlFor="gender" className="font-semibold text-[1rem] dark:text-white">Gender</label>
                                 <div className="flex items-center   text-[1rem]   ">
                                 
-                                <input   className="mr-2 w-[100%] bg-[inherit] " id="gender"type="text" name="gender" 
+                                <input disabled={true}  className="mr-2 w-[100%] bg-[inherit] " id="gender"type="text" name="gender" 
                                         value={`${user.gender}`}
                                 />
                                   <PencilIcon className="size-6"/>
