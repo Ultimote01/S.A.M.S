@@ -175,6 +175,7 @@ export default  function Home() {
 
       if (refreshList.current){
       if (!pageLoaded.current){
+          // eslint-disable-next-line
           if (userObject?.role === "lecturer") return getAttendanceList()
              getStudentAttendanceList();
         pageLoaded.current = true;
