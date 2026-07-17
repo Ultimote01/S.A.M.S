@@ -76,6 +76,7 @@ export default  function Home() {
   const [attendancePerDay, setAttendancePerDay] = useState(null);
   const [registeredStudents, setRegisteredStudents] =useState(0);
   const pageLoaded = useRef(false);
+  const refreshList = useRef(true);
   const navigate = useNavigate();
 
   async function getStudentAttendanceList()
@@ -92,7 +93,8 @@ export default  function Home() {
             activeObj.attendanceList = attendanceList;
             activeObj.registeredStudents = res.data?.registeredStudents? res.data.registeredStudents.length: 0
             localStorage.setItem("active-user", JSON.stringify(activeObj));
-
+            refreshList.current = false;
+            setTimeout(()=> {refreshList.current= true;}, 15000);
            setTimeout(()=>{loadData()},2000)
           }
       } catch (err) {
@@ -114,7 +116,8 @@ export default  function Home() {
             activeObj.attendanceList = attendanceList;
             activeObj.registeredStudents = res.data?.registeredStudents? res.data.registeredStudents.length: 
             localStorage.setItem("active-user", JSON.stringify(activeObj));
-
+            refreshList.current = false;
+            setTimeout(()=> {refreshList.current= true;}, 15000);
            setTimeout(()=>{loadData()},2000)
           }
       } catch (err) {
@@ -170,10 +173,13 @@ export default  function Home() {
 
   useEffect(()=>{ 
 
+      if (refreshList.current){
       if (!pageLoaded.current){
-        loadData();
+          if (userObject?.role === "lecturer") return getAttendanceList()
+             getStudentAttendanceList();
         pageLoaded.current = true;
       }
+    }
 
   },[])
 
