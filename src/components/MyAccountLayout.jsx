@@ -16,7 +16,7 @@ export default function MyAccountLayout({user}) {
                            <div className="flex flex-col text-center">
                                 <label htmlFor="my-fullName" className="font-semibold text-[1.9rem] dark:bg-[rgba(0, 0, 0, 0)] dark:text-white ">{`${createStringTitle(user.fullName.split(' ')[0])} ${createStringTitle(user.fullName.split(' ')[1])}`}</label>
                                 <div className="flex items-center mt-4 justify-center"> 
-                                <input disabled={true} className="text-center w-[40%] dark:bg-[rgba(0, 0, 0, 0)]" id="my-fullname" name="my-fullname" value={`@${user.fullName.replace(" ","")}`}/>
+                                <input disabled={true} className=" mr-2 text-center w-[40%] dark:bg-[rgba(0, 0, 0, 0)]" id="my-fullname" name="my-fullname" value={`@${user.fullName.replace(" ","")}`}/>
                                    <PencilIcon className="size-4"/>
                                 </div>
                            </div>
