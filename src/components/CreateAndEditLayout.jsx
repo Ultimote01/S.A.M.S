@@ -118,10 +118,10 @@ async function handleSubmit(e) {
      
     if (edit) return handleSummitEditLecture({
         startDate: startTimeEl?.value.split('T')[0],
-        endTime: endTimeEl?.value+":00",
+        endTime: endTimeEl?.value+":00Z",
         mode: mode?.value,
         course: course?.value,
-        startTime: startTimeEl?.value.split('T')[1]+':00'
+        startTime: startTimeEl?.value.split('T')[1]+':00Z'
 
     });
 
