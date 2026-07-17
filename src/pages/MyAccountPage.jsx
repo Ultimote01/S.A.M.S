@@ -19,7 +19,7 @@ export default function MyAccountPage() {
                 }
             }
         }
-    useEffect(()=>reValidateUser(),[])
+    useEffect(()=>{reValidateUser()},[])
 
     useEffect(()=>{
         function renderPage(data){
@@ -32,6 +32,7 @@ export default function MyAccountPage() {
         }
     },[]);
 
+ 
 
     if (!user) return ;
     return(

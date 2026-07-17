@@ -72,6 +72,21 @@ export default function MyAccountLayout({user}) {
                                 </div>
                                    
                             </div>
+
+                               <div className="flex w-[100%] gap-x-[25%] items-center mt-[1.5rem] ">
+                                <label htmlFor="courses" className="font-semibold text-[1rem] dark:text-white">Courses</label>
+                                <div className="flex items-center   text-[1rem] ">
+                                
+                                <select className="mr-2 w-[100%] bg-[inherit] text-[0.95rem]" id="courses"type="text" name="courses" 
+                                >
+                                    {user?.courses && user.courses.map((course)=><option>
+                                        {course}
+                                    </option>)}
+                                </select>
+                                  {/* <PencilIcon className="size-6"/> */}
+                                </div>
+                                   
+                            </div>
                             
                             
                 </div>

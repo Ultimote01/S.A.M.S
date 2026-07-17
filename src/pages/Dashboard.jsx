@@ -309,9 +309,9 @@ export default  function Home() {
           <SimpleAreaChart/>
           <div className={"w-[100%] shadow-sm border-[2px] max-w-[424px]text-black border-solid border-[#C0C0C0] rounded-[4.5px] md:w-[60%] dark:text-white"}> 
             <div className='flex mt-2 px-2 justify-between items-center'>
-              <div className='flex items-start mt-1 text-[0.82em] text-black font-bold dark:text-white'> 
+              <div className='flex items-start mt-1 text-[0.82em] text-black font-bold lg:pt-1 dark:text-white'> 
                 <CheckCircleIcon className='size-4 mt-1'/>
-               <h4 className='pl-0.5  lg:mt-1 lg:text-[1rem]'>Students Attendance Summary</h4>
+               <h4 className='pl-0.5    lg:text-[1rem]'>Students Attendance Summary</h4>
               </div>
               <select className='py-1 px-2 text-black rounded-[2px] text-[0.75em] font-semibold dark:text-white'
               onChange={(e)=>{
