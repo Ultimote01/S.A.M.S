@@ -14,9 +14,9 @@ export default function MyAccountLayout({user}) {
                         </div>
                         <div>
                            <div className="flex flex-col text-center">
-                                <label htmlFor="my-fullName" className="font-semibold text-[1.9rem] bg-[inherit] dark:text-white ">{`${createStringTitle(user.fullName.split(' ')[0])} ${createStringTitle(user.fullName.split(' ')[1])}`}</label>
+                                <label htmlFor="my-fullName" className="font-semibold text-[1.9rem] dark:bg-[rgba(0, 0, 0, 0)] dark:text-white ">{`${createStringTitle(user.fullName.split(' ')[0])} ${createStringTitle(user.fullName.split(' ')[1])}`}</label>
                                 <div className="flex items-center mt-4 justify-center"> 
-                                <input disabled={true} className="text-center w-[40%] bg-[inherit]" id="my-fullname" name="my-fullname" value={`@${user.fullName.replace(" ","")}`}/>
+                                <input disabled={true} className="text-center w-[40%] dark:bg-[rgba(0, 0, 0, 0)]" id="my-fullname" name="my-fullname" value={`@${user.fullName.replace(" ","")}`}/>
                                    <PencilIcon className="size-4"/>
                                 </div>
                            </div>
@@ -29,7 +29,7 @@ export default function MyAccountLayout({user}) {
                         <div className="flex gap-x-2   flex-col">
                             <div className="flex w-[100%]  gap-x-[20%] items-center">
                             <label htmlFor="username" className="font-semibold text-[1rem] dark:text-white">Username</label>
-                            <div className="flex items-center bg-white  bg-[inherit]"> 
+                            <div className="flex items-center  dark:bg-[rgba(0, 0, 0, 0)]"> 
                             
                                 <input  className="mr-2 w-[100%] bg-[inherit]" id="username" type="text" name="username" 
                                     value={`@${user.fullName.replace(" ","")}`}
@@ -40,7 +40,7 @@ export default function MyAccountLayout({user}) {
                             </div>
                             <div className="flex w-[100%] gap-x-[32.5%] items-center mt-[1.5rem] ">
                                 <label htmlFor="email" className="font-semibold text-[1rem] dark:text-white">Email</label>
-                                <div className="flex items-center   bg-white text-[1rem] bg-[inherit] ">
+                                <div className="flex items-center   text-[1rem] ">
                                 
                                 <input disabled={true} className="mr-2 w-[100%] bg-[inherit]" id="email"type="text" name="email" 
                                         value={`${user.email}`}
@@ -51,9 +51,9 @@ export default function MyAccountLayout({user}) {
                             </div>
                             <div className="flex w-[100%] gap-x-[28%] items-center mt-[1.5rem] ">
                                 <label htmlFor="gender" className="font-semibold text-[1rem] dark:text-white">Gender</label>
-                                <div className="flex items-center   bg-white text-[1rem] bg-[inherit]  ">
+                                <div className="flex items-center   text-[1rem]   ">
                                 
-                                <input disabled={true} className="mr-2 w-[100%] bg-[inherit]" id="gender"type="text" name="gender" 
+                                <input   className="mr-2 w-[100%] bg-[inherit] " id="gender"type="text" name="gender" 
                                         value={`${user.gender}`}
                                 />
                                   <PencilIcon className="size-6"/>
@@ -63,7 +63,7 @@ export default function MyAccountLayout({user}) {
 
                              <div className="flex w-[100%] gap-x-[32%] items-center mt-[1.5rem] ">
                                 <label htmlFor="dob" className="font-semibold text-[1rem] dark:text-white">D.O.B</label>
-                                <div className="flex items-center   bg-white text-[1rem] bg-[inherit] ">
+                                <div className="flex items-center   text-[1rem] ">
                                 
                                 <input disabled={true} className="mr-2 w-[100%] bg-[inherit]" id="dob"type="text" name="dob" 
                                         value={`${user.dob}`}
