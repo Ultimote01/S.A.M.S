@@ -1,6 +1,6 @@
 import { UserPlusIcon } from "@heroicons/react/20/solid";
 import { EnvelopeIcon, UserIcon,BuildingLibraryIcon} from "@heroicons/react/20/solid";
-import { AcademicCapIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { AcademicCapIcon, CalendarDateRangeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { EyeIcon } from "@heroicons/react/24/outline";
 import { LockClosedIcon } from "@heroicons/react/24/outline";
 import { PhoneIcon } from "@heroicons/react/24/outline";
@@ -36,7 +36,9 @@ export function SignUpLayout(){
   };
 
   async function submit(data) {
-
+        data.dob = 
+        `${document.getElementById("dob1").value}/${document.getElementById("dob2").value}/${data.dob}`;
+        
         if (Object.values(data).length === 9) setConsent((state)=> (
             {
                 ...state,
@@ -155,10 +157,10 @@ export function SignUpLayout(){
                             </div>
 
                             <div className="flex  w-[100%] flex-col mt-[1.5rem]">
-                                 <label htmlFor="phone-number" className="font-semibold pl-1 text-[1rem] dark:text-white">Phone Number</label>
+                                 <label htmlFor="dob" className="font-semibold pl-1 text-[1rem] dark:text-white">Phone Number</label>
                                  <div className="flex items-center bg-white py-2 pl-2 border-[2.8px] border-solid  border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600">
                                   <PhoneIcon className="size-5 mr-2"/>
-                                 <input  className="w-[100%] dark:bg-zinc-100" id="phone-number" type="text" name="phone-number" placeholder="080-0000-0000"
+                                 <input  className="w-[100%] dark:bg-zinc-100" id="dob" type="text" maxLength={11} name="dob" placeholder="080-0000-0000"
                                     {...register(
                                         "phoneNumber",
                                                 {
@@ -174,6 +176,61 @@ export function SignUpLayout(){
                                  </div>
                                  <span className="text-[0.75rem] text-[rgb(238,28,28)]">{errors.phoneNumber?.message}</span>
                             </div>
+                          </div>
+
+                          <div className="flex flex-col gap-x-2 md:flex-row">
+                            <div className="flex w-[100%] flex-col mt-[1.5rem]">
+                                <label htmlFor="gender" className="font-semibold pl-1 text-[1rem] dark:text-white">Gender</label>
+                                <div className="flex items-center py-2 pl-2 border-[2.8px] border-solid  bg-white border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600 "> 
+                                <UserIcon className="size-5 mr-2"/>
+                                 <select  id="gender" className="bg-white   w-[100%] dark:bg-zinc-100  md:pr-[4.5rem]"  
+                                    name="gender" 
+                                        {...register(
+                                            "gender",
+                                            {
+                                                validate: (value)=> ["male", "female","non-binary"].indexOf(value.toLowerCase()) > -1 || "Gender"
+                                            }
+                                        )}
+                                    >
+                                    <option >Gender</option>
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                    <option>Non-Binary</option>
+                                 </select>
+                                 </div>
+                                  <span className="text-[0.75rem] text-[rgb(238,28,28)]">{errors.gender?.message}</span>
+                                </div>
+
+                                  <div className="flex  w-[100%] flex-col mt-[1.5rem]">
+                                 <label htmlFor="dob3" className="font-semibold pl-1 text-[1rem] dark:text-white">D.O.B</label>
+                                 <div className="flex items-center bg-white py-2 pl-2 border-[2.8px] border-solid  border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600">
+                                  <CalendarDateRangeIcon className="size-5 mr-2"/>
+                                 <input  className="w-[10%] dark:bg-zinc-100" id="dob1" type="text" maxLength={2} name="dob1" placeholder="02"/>
+                                 <span className="text-[rgba(0,0,0,0.3)]">/</span>
+                                 <input  className="w-[10%] dark:bg-zinc-100" id="dob2" type="text" maxLength={2} max={12} name="dob2" placeholder="04"/>
+                                 <span className="text-[rgba(0,0,0,0.3)]">/</span>
+                                 <input  className="w-[15%] dark:bg-zinc-100" id="dob3" type="text" maxLength={4} name="dob3" placeholder="1972"
+                                    {...register(
+                                        "dob",
+                                                {
+
+                                                    required: "This field is required",
+                                                    validate: (value)=> {
+                                                        const dob = `${document.getElementById("dob1").value}/${document.getElementById("dob2").value}/${value}`
+                                                        if (/^(0[1-9]|[12][0-9]|3[01])([- /.])(0[1-9]|1[012])\2([0-9]{4})$/.test(dob))
+                                                            return true;
+
+                                                        return 'Please provide a valid D.O.B';
+                                                    }
+
+                                                      
+                                                }
+                                    )}
+                                 />
+                                 </div>
+                                 <span className="text-[0.75rem] text-[rgb(238,28,28)]">{errors.dob?.message}</span>
+                            </div>
+
                           </div>
 
 

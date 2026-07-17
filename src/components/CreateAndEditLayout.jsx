@@ -46,11 +46,13 @@ async function handleSummitEditLecture(data) {
         if (editValues[el] !== data[el]){
            
             if (el === 'startTime') {
-                 payload['startTime']= `${data['startDate']}T${data['startTime']}Z`;
+                console.log( new Date(`${data['startDate']}T${data['startTime']}`).toISOString())
+                 payload['startTime']= new Date(`${data['startDate']}T${data['startTime']}`).toISOString();
                  return 
             }
             if (el === 'endTime') {
-                payload.endTime = `${data['startDate']}T${data['endTime']}Z`;
+                console.log(new Date(`${data['startDate']}T${data['endTime']}`).toISOString())
+                payload.endTime = new Date(`${data['startDate']}T${data['endTime']}`).toISOString();
                 return;
             }  
             payload[el] = data[el];
@@ -73,8 +75,6 @@ async function handleSummitEditLecture(data) {
         const res = await api.patch("/api/v1/lectures/edit-lecture",
             payload
         );
-
-        
         setIsModalOpen(false);
         setLectureList((lecture)=>{
             return lecture.map((el, index)=> {
@@ -86,8 +86,6 @@ async function handleSummitEditLecture(data) {
         })
         
     } catch(err) {
-      
-
         setErrors({resError: err?.response?.data?.message})
         
         setIsLoading(false);
@@ -118,10 +116,10 @@ async function handleSubmit(e) {
      
     if (edit) return handleSummitEditLecture({
         startDate: startTimeEl?.value.split('T')[0],
-        endTime: endTimeEl?.value+":00Z",
+        endTime: endTimeEl?.value+":00",
         mode: mode?.value,
         course: course?.value,
-        startTime: startTimeEl?.value.split('T')[1]+':00Z'
+        startTime: startTimeEl?.value.split('T')[1]+':00'
 
     });
 

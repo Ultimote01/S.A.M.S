@@ -6,6 +6,7 @@ import LecturesPage from "./pages/LecturesPage";
 import AttendacePage from "./pages/AttendancePage";
 import SettingsPage from "./pages/SettingsPage";
 import MarkAttendanceOffline from "./pages/MarkAttendanceOffline";
+import MyAccountPage from "./pages/MyAccountPage";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
       <Route path="/lectures" element={<LecturesPage/>}/>
       <Route path="/live-class" element={<AttendacePage/>}/>
       <Route path="/settings"  element={<SettingsPage/>}/>
+      <Route path="/my-account" element={<MyAccountPage/>}/>
       <Route path="/mark-attendance-offline/:course" element={<MarkAttendanceOffline/>}/>
     </Routes>
    

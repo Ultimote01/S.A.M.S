@@ -99,7 +99,7 @@ export function AccountDropdownMenu({ anchor , handleSignOut,route}) {
  
   return (
     <DropdownMenu className="min-w-64" anchor={anchor}>
-      <DropdownItem href="#">
+      <DropdownItem to="/my-account" href='/my-account'>
         <UserCircleIcon />
         <DropdownLabel>My account</DropdownLabel>
       </DropdownItem>
