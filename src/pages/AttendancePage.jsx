@@ -45,7 +45,7 @@ function recursionWithSetTimeOut(timeOut, activeClass,userData,resolve=false) {
          if ( (Date.now() + (2 * 60 * 1000)) >= new Date(activeClass.endTime).valueOf()) {
             setTimeout(()=>{
                  markAttendanceOnlineStudents(activeClass,0);
-            },10000)
+            },30000)
             resolve=true;
         }
     }
