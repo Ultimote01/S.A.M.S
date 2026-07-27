@@ -73,6 +73,7 @@ async function getLecturesRemote() {
     },[])
  
     if (!isLiveSession) return;
+ 
 
     return( <LecturesPageLayout>
         <Heading className={" mb-4 font-semibold text-[1.3rem]  -ml-2.5 dark:text-white lg:-ml-6"}>Upcoming Lectures

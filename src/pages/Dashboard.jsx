@@ -76,7 +76,7 @@ export default  function Home() {
   const [attendancePerDay, setAttendancePerDay] = useState(null);
   const [registeredStudents, setRegisteredStudents] =useState(0);
   const pageLoaded = useRef(false);
-  const refreshList = useRef(true);
+
   const navigate = useNavigate();
 
   async function getStudentAttendanceList()
@@ -86,39 +86,17 @@ export default  function Home() {
       try {
     
           const res  = await api.get("/api/v1/attendance-list/getAttendanceBycourses");
-          console.log(res.data.attendanceList)
-          if (activeUser){
-            const activeObj = JSON.parse(activeUser);
-            const attendanceList =  res.data.attendanceList.map((el)=> el.classesPerDay).flatMap((el)=>el);
-            activeObj.attendanceList = attendanceList;
-            activeObj.registeredStudents = res.data?.registeredStudents? res.data.registeredStudents.length: 0
-            localStorage.setItem("active-user", JSON.stringify(activeObj));
-            refreshList.current = false;
-            setTimeout(()=> {refreshList.current= true;}, 15000);
-           
-          }
-      } catch (err) {
-        setIsLoadingX(false);
-        console.log(err);
-      }
-      setIsLoadingX(false);
-      setTimeout(()=>{loadData()},500)
-}
-  async function getAttendanceList () {
-      setIsLoadingX(true);
-      const activeUser = localStorage.getItem("active-user");
-      try {
-    
-          const res  = await api.get("/api/v1/attendance-list");
 
-          if (activeUser){
+         if (activeUser){
             const activeObj = JSON.parse(activeUser);
             const attendanceList =  res.data.attendanceList.map((el)=> el.classes).flatMap((el)=>el);
             activeObj.attendanceList = attendanceList;
             activeObj.registeredStudents = res.data?.registeredStudents? res.data.registeredStudents.length: 
-            localStorage.setItem("active-user", JSON.stringify(activeObj));
-            refreshList.current = false;
-            setTimeout(()=> {refreshList.current= true;}, 15000);
+            activeObj.registeredStudents;
+
+            localStorage.setItem("active-user",
+            JSON.stringify(activeObj)
+          );
             
           }
       } catch (err) {
@@ -126,7 +104,36 @@ export default  function Home() {
         console.log(err);
       }
       setIsLoadingX(false);
-      setTimeout(()=>{loadData()},500)
+      setTimeout(()=>{loadData()},200)
+}
+  async function getAttendanceList () {
+      setIsLoadingX(true);
+
+      const activeUser = localStorage.getItem("active-user");
+      try {
+    
+          const res  = await api.get("/api/v1/attendance-list/");
+       
+
+          if (activeUser){
+            const activeObj = JSON.parse(activeUser);
+            const attendanceList =  res.data.attendanceList.map((el)=> el.classes).flatMap((el)=>el);
+            activeObj.attendanceList = attendanceList;
+            activeObj.registeredStudents = res.data?.registeredStudents? res.data.registeredStudents.length: 
+            activeObj.registeredStudents;
+
+            localStorage.setItem("active-user",
+            JSON.stringify(activeObj)
+          );
+         
+            
+          }
+      } catch (err) {
+        setIsLoadingX(false);
+        console.log(err);
+      }
+      setIsLoadingX(false);
+      setTimeout(()=>{loadData()},200)
   }
 
   const loadData = function(){
@@ -173,16 +180,12 @@ export default  function Home() {
     }
   
 
-  useEffect(()=>{ 
-
-      if (refreshList.current){
+  useEffect(()=>{
       if (!pageLoaded.current){
-          // eslint-disable-next-line
-          if (userObject?.role === "lecturer") return getAttendanceList()
-             getStudentAttendanceList();
+        loadData();
         pageLoaded.current = true;
       }
-    }
+ 
 
   },[])
 
@@ -217,8 +220,9 @@ export default  function Home() {
     
   }
   
- 
+  
   if (userObject === null) return;
+ 
 
    
   return (
