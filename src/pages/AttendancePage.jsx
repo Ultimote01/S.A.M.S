@@ -71,8 +71,8 @@ async function  markAttendanceOnlineStudents(activeClass, count) {
                      if (count < 4){
                     count++;
                     setTimeout(()=>{
-                        initiateAttendance(activeClass, count);
-                    },3000)
+                        markAttendanceOnlineStudents(activeClass, count);
+                    },5000)
                 }
                 }
                 
