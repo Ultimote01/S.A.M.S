@@ -42,7 +42,7 @@ export default function MyAccountLayout({user}) {
                                 <label htmlFor="email" className="font-semibold text-[1rem] dark:text-white">Email</label>
                                 <div className="flex items-center   text-[1rem] ">
                                 
-                                <input disabled={true} className="mr-2 w-[100%] bg-[inherit]" id="email"type="text" name="email" 
+                                <input disabled={true} className="mr-2 w-[100%] bg-[inherit] overflow-x-scroll" id="email"type="text" name="email" 
                                         value={`${user.email}`}
                                 />
                                   <PencilIcon className="size-6"/>
@@ -77,12 +77,23 @@ export default function MyAccountLayout({user}) {
                                 <label htmlFor="courses" className="font-semibold text-[1rem] dark:text-white">Courses</label>
                                 <div className="flex items-center   text-[1rem] ">
                                 
-                                <select className="mr-2 py-1 w-[100%] px-0.5 bg-stone-50  border-[1px] border-solid  border-zinc-200  rounded-[5px]  text-[0.89rem] dark:bg-stone-900" id="courses"type="text" name="courses" 
+                                {/* <select className="mr-2 py-1 w-[100%] px-0.5 bg-stone-50  border-[1px] border-solid  border-zinc-200  rounded-[5px]  text-[0.89rem] dark:bg-stone-900" id="courses"type="text" name="courses" 
                                 >
                                     {user?.courses && user.courses.map((course,index)=><option key={index}>
                                         {course}
                                     </option>)}
-                                </select>
+                                </select> */}
+                                {
+                                    !user?.courses && <span>N/A</span>
+                                }
+                                {
+                                    user?.courses &&  <ul  className="mr-2 py-1 w-[100%] h-[3rem] font-semibold  px-3 bg-stone-50  border-[0.1px] border-solid  border-zinc-600  rounded-[5px]  overflow-auto  divide-y divide-zinc-500 divide-dash  text-[0.64rem] sm:text-[0.79rem] dark:bg-[inherit]">
+                                        {user.courses.map((course)=> <li className="-mt-0.2 pb-0.2">{course}</li>)}
+                                    </ul>
+                                }
+                                
+                                    
+                              
                                 
                                 </div>
                                    
