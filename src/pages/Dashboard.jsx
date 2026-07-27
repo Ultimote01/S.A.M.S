@@ -79,9 +79,9 @@ export default  function Home() {
 
   const navigate = useNavigate();
 
-  async function getStudentAttendanceList()
+  async function getStudentAttendanceList(animateLoading=true)
 {
-   setIsLoadingX(true);
+   setIsLoadingX(animateLoading);
       const activeUser = localStorage.getItem("active-user");
       try {
     
@@ -89,7 +89,7 @@ export default  function Home() {
 
          if (activeUser){
             const activeObj = JSON.parse(activeUser);
-            const attendanceList =  res.data.attendanceList.map((el)=> el.classes).flatMap((el)=>el);
+            const attendanceList =  res.data.attendanceList.map((el)=> el.classesPerDay).flatMap((el)=>el);
             activeObj.attendanceList = attendanceList;
             activeObj.registeredStudents = res.data?.registeredStudents? res.data.registeredStudents.length: 
             activeObj.registeredStudents;
@@ -106,8 +106,8 @@ export default  function Home() {
       setIsLoadingX(false);
       setTimeout(()=>{loadData()},200)
 }
-  async function getAttendanceList () {
-      setIsLoadingX(true);
+  async function getAttendanceList (animateLoading=true) {
+      setIsLoadingX(animateLoading);
 
       const activeUser = localStorage.getItem("active-user");
       try {
@@ -138,13 +138,8 @@ export default  function Home() {
 
   const loadData = function(){
       let activeUser = localStorage.getItem("active-user");
-      const previousPage = localStorage.getItem("previous-page");
       
-       if (previousPage === undefined ||  previousPage === null ) {
-       
-           reValidateUser();
-           pageLoaded.current =  true;
-      }
+     
     
       if (!activeUser) {
         return navigate("/", true);
@@ -157,19 +152,19 @@ export default  function Home() {
      }
 
    
-  async function reValidateUser() {
-      try {
-          await api.get("/api/v1/users/");
-        }catch(err) {
+  // async function reValidateUser() {
+  //     try {
+  //         await api.get("/api/v1/users/");
+  //       }catch(err) {
 
-            if (!err?.response?.data.message) return;
-            if (err.response.data.message.includes("User not found") ||
-            err.response.data.message.includes("Session expired") ){
-              localStorage.removeItem("active-user");
-              return navigate('/', true)
-            }
-        }
-    }
+  //           if (!err?.response?.data.message) return;
+  //           if (err.response.data.message.includes("User not found") ||
+  //           err.response.data.message.includes("Session expired") ){
+  //             localStorage.removeItem("active-user");
+  //             return navigate('/', true)
+  //           }
+  //       }
+  //   }
 
 
   function renderPage(user, registeredStudents,data){
@@ -182,7 +177,15 @@ export default  function Home() {
 
   useEffect(()=>{
       if (!pageLoaded.current){
+        const activeUser = localStorage.getItem("active-user");
         loadData();
+
+        if (activeUser){
+          if (JSON.parse(activeUser).user.role === "student"){
+            //eslint-disable-next-line
+            getStudentAttendanceList(false);
+          }else getAttendanceList(false);
+        }
         pageLoaded.current = true;
       }
  

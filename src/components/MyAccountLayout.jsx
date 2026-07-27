@@ -40,9 +40,9 @@ export default function MyAccountLayout({user}) {
                             </div>
                             <div className="flex w-[100%] gap-x-[32.5%] items-center mt-[1.5rem] ">
                                 <label htmlFor="email" className="font-semibold text-[1rem] dark:text-white">Email</label>
-                                <div className="flex items-center   text-[1rem] ">
+                                <div className="flex items-center overflow-x-auto   text-[1rem] ">
                                 
-                                <input disabled={true} className="mr-2 w-[100%] bg-[inherit] overflow-x-scroll" id="email"type="text" name="email" 
+                                <input disabled={true} className="mr-2 w-[100%] bg-[inherit] " id="email"type="text" name="email" 
                                         value={`${user.email}`}
                                 />
                                   <PencilIcon className="size-6"/>
@@ -77,12 +77,7 @@ export default function MyAccountLayout({user}) {
                                 <label htmlFor="courses" className="font-semibold text-[1rem] dark:text-white">Courses</label>
                                 <div className="flex items-center   text-[1rem] ">
                                 
-                                {/* <select className="mr-2 py-1 w-[100%] px-0.5 bg-stone-50  border-[1px] border-solid  border-zinc-200  rounded-[5px]  text-[0.89rem] dark:bg-stone-900" id="courses"type="text" name="courses" 
-                                >
-                                    {user?.courses && user.courses.map((course,index)=><option key={index}>
-                                        {course}
-                                    </option>)}
-                                </select> */}
+                    
                                 {
                                     !user?.courses && <span>N/A</span>
                                 }

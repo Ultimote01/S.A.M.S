@@ -276,7 +276,7 @@ export function SignUpLayout(){
                          </div>
                          <div className="flex flex-col gap-x-2 md:flex-row">
                             <div className="flex  w-[100%] flex-col mt-[1.5rem]">
-                                <label htmlFor="id" className="font-semibold pl-1 text-[1rem] dark:text-white">Matric/Staff ID</label>
+                                <label htmlFor="id" className="font-semibold pl-1 text-[1rem] dark:text-white">Matric No/Staff ID</label>
                                 <div className="flex items-center bg-white py-2 pl-2 border-[2.8px] border-solid  border-zinc-200 mt-[0.4rem] rounded-[5px] dark:bg-zinc-100 dark:border-gray-600 dark:text-zinc-600"> 
                                 <UserIcon className="size-6 mr-2"/>
                                  <input  className="w-[100%] dark:bg-zinc-100" id="id" type="text" name="id" placeholder="Enter your Id" 
