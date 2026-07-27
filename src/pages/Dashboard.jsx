@@ -95,13 +95,14 @@ export default  function Home() {
             localStorage.setItem("active-user", JSON.stringify(activeObj));
             refreshList.current = false;
             setTimeout(()=> {refreshList.current= true;}, 15000);
-           setTimeout(()=>{loadData()},2000)
+           
           }
       } catch (err) {
         setIsLoadingX(false);
         console.log(err);
       }
       setIsLoadingX(false);
+      setTimeout(()=>{loadData()},500)
 }
   async function getAttendanceList () {
       setIsLoadingX(true);
@@ -118,13 +119,14 @@ export default  function Home() {
             localStorage.setItem("active-user", JSON.stringify(activeObj));
             refreshList.current = false;
             setTimeout(()=> {refreshList.current= true;}, 15000);
-           setTimeout(()=>{loadData()},2000)
+            
           }
       } catch (err) {
         setIsLoadingX(false);
         console.log(err);
       }
       setIsLoadingX(false);
+      setTimeout(()=>{loadData()},500)
   }
 
   const loadData = function(){
@@ -184,14 +186,7 @@ export default  function Home() {
 
   },[])
 
-
- 
-    
-     
-
-    
   
-    
     
     async function handleNAction(route) {
        setIsLoading(true);
