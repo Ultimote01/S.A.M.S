@@ -284,10 +284,10 @@ export function SignUpLayout(){
                                         "id",
                                              {
                                                 required: "This field is required",
-                                                maxLength: {value: 9, message: "ID must not be longer than 9 numeric digits"},
+                                                maxLength: {value: 15, message: "ID must not be longer than 15 numeric digits"},
                                                 minLength: {value:7, message: "ID must be atleast 7 numeric digits "},
                                                 validate: (value)=> getValues().role.toLowerCase() === "student"?
-                                                    value.startsWith("7") && !isNaN(value) && value.length === 9 ? true : "Student id is invalid":
+                                                   /^p\/nd\/\d{2}\/\d+$/.test(value) ? true : "Student id is invalid":
                                                     value.startsWith("9") && !isNaN(value) && value.length === 7 ? true : "Lecturer id is invalid"
                                             }
                                     )}
