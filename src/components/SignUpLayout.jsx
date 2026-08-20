@@ -38,6 +38,7 @@ export function SignUpLayout(){
   async function submit(data) {
         data.dob = 
         `${document.getElementById("dob1").value}/${document.getElementById("dob2").value}/${data.dob}`;
+        data.email = data.email.toLowerCase();
         
         if (Object.values(data).length === 9) setConsent((state)=> (
             {
@@ -284,11 +285,11 @@ export function SignUpLayout(){
                                         "id",
                                              {
                                                 required: "This field is required",
-                                                maxLength: {value: 15, message: "ID must not be longer than 15 numeric digits"},
-                                                minLength: {value:7, message: "ID must be atleast 7 numeric digits "},
+                                                maxLength: {value: 13,message: "Student id must be atleast 13 characters long"},
+                                                minLength: {value:8,message: "Lecturer id must be atleast 8 characters long"},
                                                 validate: (value)=> getValues().role.toLowerCase() === "student"?
-                                                   /^p\/nd\/\d{2}\/\d+$/.test(value) ? true : "Student id is invalid":
-                                                    value.startsWith("9") && !isNaN(value) && value.length === 7 ? true : "Lecturer id is invalid"
+                                                /^p\/nd\/\d{2}\/\d+$/.test(value) ? true : "Student id is invalid":
+                                                /^AD\/R\/\S+$/.test(value) ? true: "Lecturer id is invalid"
                                             }
                                     )}
                                  />
@@ -363,7 +364,7 @@ export function SignUpLayout(){
 
                             
 
-                            <div className="flex  mt-3">
+                        <div className="flex items-center  mt-3">
                             <input id="cbox" type="checkbox" className="rounded-[5px] border-[3px] border-solid  border-zinc-200" name="consent" 
                                 onChange={()=> setConsent((state)=> ({...state,
                                     agreed: !state.agreed? true : false,
@@ -371,9 +372,7 @@ export function SignUpLayout(){
                                 }) )}
                             />
                             <h3 className="ml-2 text-[0.85rem] leading-2 ">I agree to the <span className="text-[rgb(252,130,0)]">terms and conditions</span></h3>
-                           </div>
-                            
-                             <span className="text-[0.65rem] text-[rgb(238,28,28)]">{!consent.agreed && consent.submitted && "Please accept the terms & conditions"}</span>
+                        </div>
 
 
                           <div className="flex  mt-12 md:justify-center">
