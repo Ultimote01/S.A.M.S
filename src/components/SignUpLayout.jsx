@@ -285,10 +285,10 @@ export function SignUpLayout(){
                                         "id",
                                              {
                                                 required: "This field is required",
-                                                maxLength: {value: 13,message: "Student id must be atleast 13 characters long"},
-                                                minLength: {value:8,message: "Lecturer id must be atleast 8 characters long"},
+                                                maxLength: {value: 15, message: "Id must be atleast 13 characters long"},
+                                                minLength: {value:8 , message: "Id must be atleast 8 characters long"},
                                                 validate: (value)=> getValues().role.toLowerCase() === "student"?
-                                                /^p\/nd\/\d{2}\/\d+$/.test(value) ? true : "Student id is invalid":
+                                                /^p\/nd\/\d{2}\/\S+$/.test(value) ? true : "Student id is invalid":
                                                 /^AD\/R\/\S+$/.test(value) ? true: "Lecturer id is invalid"
                                             }
                                     )}

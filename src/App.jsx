@@ -24,7 +24,7 @@ function App() {
       <Route path="/my-account" element={<MyAccountPage/>}/>
       <Route path="/mark-attendance-offline/:course" element={<MarkAttendanceOffline/>}/>
     </Routes>
-   
+    
    </BrowserRouter>
   )
 } 

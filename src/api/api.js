@@ -19,7 +19,7 @@ api.interceptors.request.use((config) => {
        'X-Custom-Header': userTimeZone,
       Authorization: `Bearer ${user?.token}`
     };
-   
+    
   }
   return config;
 });
